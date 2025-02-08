@@ -1,10 +1,15 @@
 import { useLocation } from 'react-router-dom';
 import QuestCard from '../components/QuestCard';
 import { isHomeRoute } from '../lib/routes';
+import cardsPreview from '../assets/cards-preview.png';
+import heavenIsland from '../assets/heaven-island.jpg';
+import space from '../assets/space.jpg';
+import seasonalQuest from '../assets/seasonal-quest.jpg';
+import newIcon from '../assets/new-icon.jpg';
 
 function HomePage() {
     const location = useLocation();
-    
+
 // Check if we're on the home route
 if (!isHomeRoute(location.pathname)) {
     return null;
@@ -25,7 +30,7 @@ if (!isHomeRoute(location.pathname)) {
                         </div>
                         <div className="col-lg-6 pe-0">
                             <img
-                                src="/cards-preview.png"
+                                src={cardsPreview}
                                 alt="Quest cards"
                                 className="img-fluid w-100"  // Зберігаємо ширину 100% для адаптивності
                                 style={{ maxWidth: '100%', height: 'auto' }} // Забезпечуємо адаптивність по висоті
@@ -40,10 +45,10 @@ if (!isHomeRoute(location.pathname)) {
                     <h2 className="text-white mb-4">Best Quests</h2>
                     <div className="row g-4">
                         {[
-                            { title: 'Heaven island quest', image: '/heaven-island.jpg' },
-                            { title: 'Space explorers', image: '/space.jpg' },
-                            { title: 'Heaven island quest', image: '/heaven-island.jpg' },
-                            { title: 'Space explorers', image: '/space.jpg' }
+                            { title: 'Heaven island quest', image: heavenIsland },
+                            { title: 'Space explorers', image: space },
+                            { title: 'Heaven island quest', image: heavenIsland },
+                            { title: 'Space explorers', image: space }
                         ].map((quest, index) => (
                             <div className="col-lg-3 col-md-6" key={index}>
                                 <QuestCard {...quest} />
@@ -63,7 +68,7 @@ if (!isHomeRoute(location.pathname)) {
                     <div className="row g-4">
                         <div className="col-lg-8">
                             <div className="position-relative">
-                                <img src="/seasonal-quest.jpg" alt="Seasonal quest"
+                                <img src={seasonalQuest} alt="Seasonal quest"
                                      className="img-fluid rounded-3" style={{ width: '100%', height: 'auto' }} />
                                 <h3 className="position-absolute bottom-0 start-0 p-4 text-white m-0">
                                     Hurry up to try a seasonal quest!
@@ -71,7 +76,7 @@ if (!isHomeRoute(location.pathname)) {
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            <img src="/new-icon.jpg" alt="New icon"
+                            <img src={newIcon} alt="New icon"
                                  className="img-fluid rounded-3 mb-2" style={{ width: '100%', height: 'auto' }} />
                             <p className="text-white mb-0">New icon is available!</p>
                         </div>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import ROUTES from '../lib/routes';
-import logo from '/logo.png';
-import userPhoto from '/user-photo.png'; // Зображення користувача
+import logo from "../assets/logo.png";
+import userPhoto from '../assets/user-photo.png'; // Зображення користувача
 
 function Header() {
   return (
