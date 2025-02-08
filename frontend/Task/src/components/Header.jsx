@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ROUTES from '../lib/routes';
 import logo from '/logo.png';
 import userPhoto from '/user-photo.png'; // Зображення користувача
 
@@ -10,14 +11,14 @@ function Header() {
           {/* Верхній рядок з логотипом і посиланнями */}
           <div className="d-flex justify-content-between align-items-center w-100 mb-2">
             <div className="d-flex">
-              <Link className="nav-link text-black me-3" to="/login">
+              <Link className="nav-link text-black me-3" to={ROUTES.AUTH}>
                 Log In/ Sign In
               </Link>
             </div>
 
             {/* Логотип */}
             <div className="logo-container">
-              <img src={logo} alt="Logo" className="custom-logo" />
+            <Link to={ROUTES.HOME}><img src={logo} alt="Logo" className="custom-logo" /> </Link>
             </div>
 
             {/* Вибір мови та фото користувача */}

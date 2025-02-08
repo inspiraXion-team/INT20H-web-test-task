@@ -1,6 +1,15 @@
+import { useLocation } from 'react-router-dom';
 import QuestCard from '../components/QuestCard';
+import { isHomeRoute } from '../lib/routes';
 
 function HomePage() {
+    const location = useLocation();
+    
+// Check if we're on the home route
+if (!isHomeRoute(location.pathname)) {
+    return null;
+}
+
     return (
         <>
             <section className="py-5">

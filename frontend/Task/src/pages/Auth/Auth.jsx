@@ -1,8 +1,16 @@
 import React, { useState } from "react";
+import { useLocation } from 'react-router-dom';
+import { isAuthRoute } from '../../lib/routes';
 import "./Auth.css";
 
 const Auth = () => {
+  const location = useLocation();
   const [isLoginMode, setIsLoginMode] = useState(false);
+
+  // Check if we're on the auth route
+  if (!isAuthRoute(location.pathname)) {
+    return null;
+  }
 
   const toggleMode = () => {
     setIsLoginMode(!isLoginMode);
@@ -10,7 +18,7 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Тут можна додати логіку для обробки форми
+    // Add form handling logic here
   };
 
   return (
