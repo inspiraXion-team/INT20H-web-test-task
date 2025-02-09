@@ -22,7 +22,7 @@ namespace Domain.Interfaces
         Task DeleteAsync(object id);
 
         Task DeleteAsync(TEntity entity);
-        Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null);
+        Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> filter = null, string includeProperties = "");
 
     }
 }
