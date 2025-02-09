@@ -1,4 +1,5 @@
 ﻿using Application.DTOs;
+using Domain.DTOs;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,10 +10,12 @@ namespace API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ISocialAuthService _socialAuthService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ISocialAuthService socialAuthService)
         {
             _authService = authService;
+            _socialAuthService = socialAuthService;
         }
 
         [HttpPost("register")]
@@ -69,6 +72,26 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 return Unauthorized(ex.Message);
+            }
+        }
+
+        [HttpPost("external-login/{provider}")]
+        public async Task<IActionResult> ExternalLogin(string provider, [FromBody] ExternalAuthDTO authDTO)
+        {
+            try
+            {
+                AuthResponseDTO authResponse = provider switch
+                {
+                    "google" => await _socialAuthService.AuthenticateWithGoogleAsync(authDTO.AccessToken),
+                    "facebook" => await _socialAuthService.AuthenticateWithFacebookAsync(authDTO.AccessToken),
+                    _ => throw new Exception("Unsupported provider")
+                };
+
+                return Ok(authResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }
