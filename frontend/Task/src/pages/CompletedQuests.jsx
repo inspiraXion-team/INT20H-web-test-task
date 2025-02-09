@@ -1,6 +1,18 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { isCompletedQuestsRoute, getCompletedQuestsRoute } from '../lib/routes';
 
 const CompletedQuests = () => {
+  const location = useLocation(); // Отримуємо інформацію про поточний URL
+
+  useEffect(() => {
+    // Перевіряємо, чи поточний роут є роутом завершених квестів
+    if (isCompletedQuestsRoute(location.pathname)) {
+      console.log('This is the completed quests route');
+      console.log('Completed quests route:', getCompletedQuestsRoute());
+    }
+  }, [location]);
+
   // Приклад даних про завершені квести
   const completedQuests = [
     {

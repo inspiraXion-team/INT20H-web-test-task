@@ -1,7 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { isLogoutRoute, getLogoutRoute } from '../lib/routes';
 
 const Logout = () => {
+  const location = useLocation(); // Отримуємо інформацію про поточний URL
   const [isConfirming, setIsConfirming] = useState(false);
+
+  useEffect(() => {
+    // Перевіряємо, чи поточний роут є роутом виходу
+    if (isLogoutRoute(location.pathname)) {
+      console.log('This is the logout route');
+      console.log('Logout route:', getLogoutRoute());
+    }
+  }, [location]);
 
   // Функція для виходу
   const handleLogout = () => {

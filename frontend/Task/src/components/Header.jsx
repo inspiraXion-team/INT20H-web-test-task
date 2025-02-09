@@ -39,17 +39,17 @@ function Header() {
   />
                   <ul className="dropdown-menu dropdown-menu-end">
     <li>
-      <Link className="dropdown-item" to="/profile">
+      <Link className="dropdown-item" to={ROUTES.PROFILE}>
         My Profile
       </Link>
     </li>
     <li>
-      <Link className="dropdown-item" to="/completed-quests">
+      <Link className="dropdown-item" to={ROUTES.COMPLETED_QUESTS}>
         Completed Quests
       </Link>
     </li>
     <li>
-      <Link className="dropdown-item" to="/logout">
+      <Link className="dropdown-item" to={ROUTES.LOGOUT}>
         Log Out
       </Link>
     </li>

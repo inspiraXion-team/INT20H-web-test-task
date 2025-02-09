@@ -1,6 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { isProfileRoute, getProfileRoute } from '../lib/routes';
 
 const Profile = () => {
+  const location = useLocation(); // Отримуємо інформацію про поточний URL
+
   // Стан для зберігання даних профілю
   const [profile, setProfile] = useState({
     name: 'John Doe',
@@ -45,6 +49,14 @@ const Profile = () => {
     // Тут можна додати логіку для збереження даних на сервер
     console.log('Profile updated:', profile);
   };
+
+  useEffect(() => {
+    // Перевіряємо, чи поточний роут є роутом профілю
+    if (isProfileRoute(location.pathname)) {
+      console.log('This is the profile route');
+      console.log('Profile route:', getProfileRoute());
+    }
+  }, [location]);
 
   return (
     <div style={styles.profilePage}>

@@ -17,9 +17,9 @@ function App() {
         <Routes>
           <Route exact path={ROUTES.HOME} element={<HomePage />} />
           <Route path={ROUTES.AUTH} element={<Auth />} />
-        <Route path="/profile" element={<Profile />} />
-          <Route path="/completed-quests" element={<CompletedQuests />} />
-          <Route path="/logout" element={<Logout />} />
+          <Route path={ROUTES.PROFILE} element={<Profile />} />
+          <Route path={ROUTES.COMPLETED_QUESTS} element={<CompletedQuests />} />
+          <Route path={ROUTES.LOGOUT} element={<Logout />} />
         </Routes>
       </main>
       <Footer />
