@@ -1,4 +1,5 @@
 using Domain.Interfaces;
+using DotNetEnv;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
@@ -7,13 +8,29 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddUserSecrets<Program>();
-builder.Configuration.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-builder.Configuration.AddEnvironmentVariables();
+// Loading variables from the .env file
+Env.Load();
 
-// Set up DB connection
+// Getting secret values from the .env
+var dbConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+var googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
+var googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
+var facebookClientId = Environment.GetEnvironmentVariable("FACEBOOK_CLIENT_ID");
+var facebookClientSecret = Environment.GetEnvironmentVariable("FACEBOOK_CLIENT_SECRET");
+
+// Checking if the required values are present
+if (string.IsNullOrEmpty(dbConnectionString) ||
+    string.IsNullOrEmpty(googleClientId) ||
+    string.IsNullOrEmpty(googleClientSecret) ||
+    string.IsNullOrEmpty(facebookClientId) ||
+    string.IsNullOrEmpty(facebookClientSecret))
+{
+    throw new ArgumentException("Not all necessary environment variables were found in the .env file.");
+}
+
+// Adding database connection using the value from .env
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
+    options.UseSqlServer(dbConnectionString, sqlOptions =>
     {
         sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
@@ -22,11 +39,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     })
 );
 
-// Add services to the container.
+// Adding services to the container
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Configuring authentication with Google and Facebook
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -34,23 +52,11 @@ builder.Services.AddAuthentication(options =>
 })
 .AddGoogle(googleOptions =>
 {
-    var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
-    var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    if (string.IsNullOrEmpty(googleClientId) || string.IsNullOrEmpty(googleClientSecret))
-    {
-        throw new ArgumentException("Google ClientId or ClientSecret is not set in configuration.");
-    }
     googleOptions.ClientId = googleClientId;
     googleOptions.ClientSecret = googleClientSecret;
 })
 .AddFacebook(facebookOptions =>
 {
-    var facebookClientId = builder.Configuration["Authentication:Facebook:ClientId"];
-    var facebookClientSecret = builder.Configuration["Authentication:Facebook:ClientSecret"];
-    if (string.IsNullOrEmpty(facebookClientId) || string.IsNullOrEmpty(facebookClientSecret))
-    {
-        throw new ArgumentException("Facebook ClientId or ClientSecret is not set in configuration.");
-    }
     facebookOptions.ClientId = facebookClientId;
     facebookOptions.ClientSecret = facebookClientSecret;
 });
@@ -62,7 +68,7 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuring the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
