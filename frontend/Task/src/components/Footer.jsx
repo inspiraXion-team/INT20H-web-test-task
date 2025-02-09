@@ -3,7 +3,7 @@ function Footer() {
       <footer className="bg-dark py-5">
         <div className="container">
           <div className="row justify-content-center align-items-center">
-            {/* Лівий список */}
+           
             <div className="col-12 col-md-3 mb-4 text-center text-md-start">
               <h5 className="text-white">Quespiration</h5>
               <ul className="list-unstyled">
@@ -13,7 +13,7 @@ function Footer() {
               </ul>
             </div>
   
-            {/* Середній список */}
+        
             <div className="col-12 col-md-6 mb-4 text-center">
               <h5 className="text-white">Our quests</h5>
               <ul className="list-unstyled">
@@ -23,7 +23,7 @@ function Footer() {
               </ul>
             </div>
   
-            {/* Правий список */}
+         
             <div className="col-12 col-md-3 mb-4 text-center text-md-end">
               <h5 className="text-white">Contact us</h5>
               <ul className="list-unstyled text-white">
@@ -32,8 +32,7 @@ function Footer() {
               </ul>
             </div>
           </div>
-  
-          {/* Копірайт */}
+ 
           <div className="text-center mt-4 text-white">
             <p className="mb-0">Copyright (C) Quespiration Corporation</p>
             <p className="mb-0">2023 | All rights reserved</p>
