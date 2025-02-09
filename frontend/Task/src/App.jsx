@@ -4,6 +4,10 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import Auth from './pages/Auth/Auth';
 import ROUTES from './lib/routes';
+import Profile from './pages/MyProfile.jsx';
+import CompletedQuests from './pages/CompletedQuests.jsx';
+import Logout from './pages/Logout.jsx';
+import './App.css';
 
 function App() {
   return (
@@ -13,6 +17,9 @@ function App() {
         <Routes>
           <Route exact path={ROUTES.HOME} element={<HomePage />} />
           <Route path={ROUTES.AUTH} element={<Auth />} />
+        <Route path="/profile" element={<Profile />} />
+          <Route path="/completed-quests" element={<CompletedQuests />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </main>
       <Footer />

@@ -10,7 +10,7 @@ import newIcon from '../assets/new-icon.jpg';
 function HomePage() {
     const location = useLocation();
 
-// Check if we're on the home route
+
 if (!isHomeRoute(location.pathname)) {
     return null;
 }
@@ -32,8 +32,8 @@ if (!isHomeRoute(location.pathname)) {
                             <img
                                 src={cardsPreview}
                                 alt="Quest cards"
-                                className="img-fluid w-100"  // Зберігаємо ширину 100% для адаптивності
-                                style={{ maxWidth: '100%', height: 'auto' }} // Забезпечуємо адаптивність по висоті
+                                className="img-fluid w-100" 
+                                style={{ maxWidth: '100%', height: 'auto' }}
                             />
                         </div>
                     </div>
