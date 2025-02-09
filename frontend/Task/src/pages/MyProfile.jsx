@@ -43,7 +43,6 @@ const Profile = () => {
   // Збереження змін
   const handleSave = () => {
     setIsEditing(false);
-    // Тут можна додати логіку для збереження даних на сервер
     console.log('Profile updated:', profile);
   };
 
@@ -137,7 +136,10 @@ const Profile = () => {
       borderRadius: "5px",
     },
     profileActions: {
-      display: "center",
+      display: "flex",
+      flexDirection: "column",
+      gap: "15px",
+      alignItems: "center", // Вирівнювання по центру
       marginTop: "20px",
     },
     saveButton: {
@@ -167,6 +169,26 @@ const Profile = () => {
       cursor: "pointer",
       margin: "5px",
     },
+    constructorButton: {
+      width: '100%', // Широка кнопка
+      backgroundColor: '#2196F3', // Синій колір для виділення
+      marginTop: '20px', // Відступ зверху
+      color: 'white',
+      padding: '10px',
+      border: 'none',
+      borderRadius: '5px',
+      cursor : 'pointer',
+      fontSize: '16px',
+      transition: 'background-color 0.3s, transform 0.2s',
+    },
+  };
+
+  const handleMouseOver = (e) => {
+    e.currentTarget.style.transform = 'scale(1.05)';
+  };
+
+  const handleMouseOut = (e) => {
+    e.currentTarget.style.transform = 'scale(1)';
   };
 
   return (
@@ -278,13 +300,28 @@ const Profile = () => {
         </div>
 
         <div style={styles.profileActions}>
-          <button style={styles.questButton} onClick={() => navigate("/completed-quests")}>
+          <button
+            style={styles.questButton}
+            onClick={() => navigate("/completed-quests")}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
             Completed Quests
           </button>
-          <button style={styles.questButton} onClick={() => navigate("/my-quests")}>
+          <button
+            style={styles.questButton}
+            onClick={() => navigate("/my-quests")}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
             My Quests
           </button>
-          <button style={styles.questButton} onClick={() => navigate("/constructor-of-quests")}>
+          <button
+            style={styles.constructorButton}
+            onClick={() => navigate("/constructor-of-quests")}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
             Constructor of Quests
           </button>
         </div>

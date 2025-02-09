@@ -8,7 +8,7 @@ import Profile from './pages/MyProfile.jsx';
 import CompletedQuests from './pages/CompletedQuests.jsx';
 import Logout from './pages/Logout.jsx';
 import MyQuests from './pages/MyQuests.jsx';
-import Constructor from './pages/Constructor.jsx';
+import ConstructorOfQuests from './pages/ConstructorOfQuest.jsx';
 import './App.css';
 
 function App() {
@@ -20,10 +20,10 @@ function App() {
           <Route exact path={ROUTES.HOME} element={<HomePage />} />
           <Route path={ROUTES.AUTH} element={<Auth />} />
         <Route path="/profile" element={<Profile />} />
-  <Route path="/completed-quests" element={<CompletedQuests />} />
-      <Route path="/my-quests" element={<MyQuests />} />
-      <Route path="/constructor" element={<Constructor />} />
+          <Route path="/completed-quests" element={<CompletedQuests />} />
+            <Route path="/my-quests" element={<MyQuests />} />
           <Route path="/logout" element={<Logout />} />
+        <Route path="/constructor-of-quests" element={<ConstructorOfQuests />} />
         </Routes>
       </main>
       <Footer />

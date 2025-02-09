@@ -1,41 +1,10 @@
-import React from 'react';
-import { Link } from "react-router-dom";
+import React from 'react'
+import { useNavigate } from "react-router-dom"; // Додано для навігації
 
-const CompletedQuests = () => {
-  const completedQuests = [
-    {
-      id: 1,
-      title: 'First Quest',
-      description: 'Complete your first quest and earn the Explorer badge.',
-      completedOn: '2023-10-01',
-    },
-    // Додайте інші квести...
-  ];
-
+const MyQuests = () => {
   return (
-    <div>
-      <h2>Completed Quests</h2>
-      <ul>
-        {completedQuests.map(quest => (
-          <li key={quest.id}>
-            <h3>{quest.title}</h3>
-            <p>{quest.description}</p>
-            <p><strong>Completed on:</strong> {quest.completedOn}</p>
-          </li>
-        ))}
-      </ul>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/completed-quests">Completed Quests</Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  );
-};
+    <div>MyQuests</div>
+  )
+}
 
-export default CompletedQuests;
+export default MyQuests
