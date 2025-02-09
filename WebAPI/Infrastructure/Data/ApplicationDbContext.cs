@@ -24,9 +24,17 @@ namespace Infrastructure.Data
         public DbSet<TaskProgress> TaskProgresses { get; set; }
         public DbSet<TaskWrite> TaskWrites { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // User to RefreshToken
+            modelBuilder.Entity<User>()
+            .HasOne(u => u.RefreshToken)
+            .WithOne(rt => rt.User)
+            .HasForeignKey<RefreshToken>(rt => rt.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
             // AuthorRating
             modelBuilder.Entity<AuthorRating>()
                 .HasOne(ar => ar.Author)
