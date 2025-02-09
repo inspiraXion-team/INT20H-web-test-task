@@ -1,14 +1,36 @@
 using Domain.Interfaces;
+using DotNetEnv;
 using Infrastructure.Data;
 using Infrastructure.Repositories;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Set up DB connection
+// Loading variables from the .env file
+Env.Load();
+
+// Getting secret values from the .env
+var dbConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+var googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
+var googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
+var facebookClientId = Environment.GetEnvironmentVariable("FACEBOOK_CLIENT_ID");
+var facebookClientSecret = Environment.GetEnvironmentVariable("FACEBOOK_CLIENT_SECRET");
+
+// Checking if the required values are present
+if (string.IsNullOrEmpty(dbConnectionString) ||
+    string.IsNullOrEmpty(googleClientId) ||
+    string.IsNullOrEmpty(googleClientSecret) ||
+    string.IsNullOrEmpty(facebookClientId) ||
+    string.IsNullOrEmpty(facebookClientSecret))
+{
+    throw new ArgumentException("Not all necessary environment variables were found in the .env file.");
+}
+
+// Adding database connection using the value from .env
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
+    options.UseSqlServer(dbConnectionString, sqlOptions =>
     {
         sqlOptions.EnableRetryOnFailure(
             maxRetryCount: 5,
@@ -17,20 +39,36 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     })
 );
 
-
-// Add services to the container.
+// Adding services to the container
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Configuring authentication with Google and Facebook
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddGoogle(googleOptions =>
+{
+    googleOptions.ClientId = googleClientId;
+    googleOptions.ClientSecret = googleClientSecret;
+})
+.AddFacebook(facebookOptions =>
+{
+    facebookOptions.ClientId = facebookClientId;
+    facebookOptions.ClientSecret = facebookClientSecret;
+});
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configuring the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
