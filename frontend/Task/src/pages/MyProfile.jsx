@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Додано для навігації
 
 const Profile = () => {
-  // Стан для зберігання даних профілю
+  const navigate = useNavigate(); // Хук для навігації
+
   const [profile, setProfile] = useState({
     name: 'John Doe',
     email: 'john.doe@example.com',
     bio: 'Quest Creator | Adventure Seeker',
-    avatar: 'https://via.placeholder.com/150', // Заглушка для аватара
+    avatar: 'https://via.placeholder.com/150',
     createdQuests: 5,
     completedQuests: 12,
     achievements: ['First Quest', 'Explorer', 'Master Creator'],
   });
 
-  // Стан для редагування
   const [isEditing, setIsEditing] = useState(false);
 
   // Обробник зміни даних
@@ -46,30 +47,155 @@ const Profile = () => {
     console.log('Profile updated:', profile);
   };
 
+  // Вбудовані стилі
+  const styles = {
+    profilePage: {
+      maxWidth: "800px",
+      margin: "50px auto",
+      backgroundColor: "#fff",
+      borderRadius: "10px",
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+      padding: "20px",
+    },
+    profileCard: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    profileHeader: {
+      display: "flex",
+      alignItems: "center",
+      marginBottom: "20px",
+    },
+    avatarContainer: {
+      position: "relative",
+      marginRight: "20px",
+    },
+    avatarUploadLabel: {
+      cursor: "pointer",
+    },
+    profileAvatar: {
+      width: "150px",
+      height: "150px",
+      borderRadius: "50%",
+      objectFit: "cover",
+    },
+    uploadText: {
+      position: "absolute",
+      bottom: "10px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      color: "#fff",
+      padding: "5px",
+      borderRadius: "5px",
+    },
+    profileInfo: {
+      textAlign: "left",
+    },
+    profileStats: {
+      display: "flex",
+      justifyContent: "space-around",
+      width: "100%",
+      margin: "20px 0",
+    },
+    statItem: {
+      textAlign: "center",
+    },
+    profileDetails: {
+      width: "100%",
+      marginBottom: "20px",
+    },
+    formGroup: {
+      marginBottom: "15px",
+    },
+    input: {
+      width: "100%",
+      padding: "10px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+    },
+    textarea: {
+      width: "100%",
+      padding: "10px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+      resize: "vertical",
+    },
+    achievementsSection: {
+      width: "100%",
+      marginBottom: "20px",
+    },
+    achievementsList: {
+      listStyleType: "none",
+      padding: 0,
+    },
+    achievementItem: {
+      backgroundColor: "#f0f0f0",
+      margin: "5px 0",
+      padding: "10px",
+      borderRadius: "5px",
+    },
+    profileActions: {
+      display: "center",
+      marginTop: "20px",
+    },
+    saveButton: {
+      padding: "10px 20px",
+      backgroundColor: "#007bff",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginRight: "10px",
+    },
+    editButton: {
+      padding: "10px 20px",
+      backgroundColor: "#28a745",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginLeft: "10px",
+    },
+    questButton: {
+      padding: "10px 20px",
+      backgroundColor: "#6c757d",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      margin: "5px",
+    },
+  };
+
   return (
     <div style={styles.profilePage}>
       <div style={styles.profileCard}>
         <div style={styles.profileHeader}>
-          {/* Аватар з можливістю завантаження нового фото */}
-          <label htmlFor="avatar-upload" style={styles.avatarUploadLabel}>
-            <img
-              src={profile.avatar}
-              alt="Profile Avatar"
-              style={styles.profileAvatar}
+          <div style={styles.avatarContainer}>
+            <label htmlFor="avatar-upload" style={styles.avatarUploadLabel}>
+              <img
+                src={profile.avatar}
+                alt="Profile Avatar"
+                style={styles.profileAvatar}
+              />
+              {isEditing && (
+                <div style={styles.uploadText}>Завантажити нове фото</div>
+              )}
+            </label>
+            <input
+              id="avatar-upload"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleFileUpload}
             />
-            {isEditing && (
-              <div style={styles.uploadText}>Завантажити нове фото</div>
-            )}
-          </label>
-          <input
-            id="avatar-upload"
-            type="file"
-            accept="image/*" // Дозволяє вибирати лише зображення
-            style={{ display: 'none' }} // Приховуємо стандартний input
-            onChange={handleFileUpload}
-          />
-          <h2>{profile.name}</h2>
-          <p>{profile.bio}</p>
+          </div>
+          <div style={styles.profileInfo}>
+            <h2>{profile.name}</h2>
+            <p>{profile.bio}</p>
+          </div>
         </div>
 
         <div style={styles.profileStats}>
@@ -150,125 +276,21 @@ const Profile = () => {
             </button>
           )}
         </div>
+
+        <div style={styles.profileActions}>
+          <button style={styles.questButton} onClick={() => navigate("/completed-quests")}>
+            Completed Quests
+          </button>
+          <button style={styles.questButton} onClick={() => navigate("/my-quests")}>
+            My Quests
+          </button>
+          <button style={styles.questButton} onClick={() => navigate("/constructor-of-quests")}>
+            Constructor of Quests
+          </button>
+        </div>
       </div>
     </div>
   );
-};
-
-// Стилі в JavaScript (inline styles)
-const styles = {
-  profilePage: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    minHeight: '100vh',
-    backgroundColor: '#f5f5f5',
-    padding: '20px',
-  },
-  profileCard: {
-    background: 'white',
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    padding: '20px',
-    width: '100%',
-    maxWidth: '600px',
-    textAlign: 'center',
-  },
-  profileHeader: {
-    marginBottom: '20px',
-  },
-  profileAvatar: {
-    width: '100px',
-    height: '100px',
-    borderRadius: '50%',
-    objectFit: 'cover',
-    marginBottom: '10px',
-    cursor: 'pointer',
-  },
-  avatarUploadLabel: {
-    position: 'relative',
-    display: 'inline-block',
-  },
-  uploadText: {
-    position: 'absolute',
-    bottom: '10px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    color: 'white',
-    padding: '5px 10px',
-    borderRadius: '5px',
-    fontSize: '12px',
-  },
-  profileStats: {
-    display: 'flex',
-    justifyContent: 'space-around',
-    marginBottom: '20px',
-  },
-  statItem: {
-    textAlign: 'center',
-  },
-  profileDetails: {
-    textAlign: 'left',
-    marginBottom: '20px',
-  },
-  formGroup: {
-    marginBottom: '15px',
-  },
-  input: {
-    width: '100%',
-    padding: '8px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    fontSize: '14px',
-  },
-  textarea: {
-    width: '100%',
-    padding: '8px',
-    border: '1px solid #ddd',
-    borderRadius: '5px',
-    fontSize: '14px',
-    resize: 'vertical',
-  },
-  achievementsSection: {
-    textAlign: 'left',
-    marginBottom: '20px',
-  },
-  achievementsList: {
-    listStyleType: 'none',
-    padding: '0',
-  },
-  achievementItem: {
-    background: '#f9f9f9',
-    padding: '10px',
-    marginBottom: '5px',
-    borderRadius: '5px',
-    border: '1px solid #ddd',
-  },
-  profileActions: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
-  editButton: {
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: '5px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    fontSize: '16px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s',
-  },
-  saveButton: {
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: '5px',
-    backgroundColor: '#28a745',
-    color: 'white',
-    fontSize: '16px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s',
-  },
 };
 
 export default Profile;
