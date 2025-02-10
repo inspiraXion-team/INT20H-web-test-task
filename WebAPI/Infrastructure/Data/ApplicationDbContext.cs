@@ -9,10 +9,6 @@ namespace Infrastructure.Data
             : base(options) { }
 
         public DbSet<AuthorRating> AuthorRatings { get; set; }
-        public DbSet<Chat> Chats { get; set; }
-        public DbSet<ChatMessage> ChatMessages { get; set; }
-        public DbSet<ChatParticipant> ChatParticipants { get; set; }
-        public DbSet<Genre> Genres { get; set; }
         public DbSet<MediaContent> MediaContents { get; set; }
         public DbSet<Quest> Quests { get; set; }
         public DbSet<QuestProgress> QuestProgresses { get; set; }
@@ -42,44 +38,11 @@ namespace Infrastructure.Data
                 .HasForeignKey<AuthorRating>(ar => ar.AuthorId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Chat
-            modelBuilder.Entity<Chat>()
-                .HasMany(c => c.ChatMessages)
-                .WithOne(cm => cm.Chat)
-                .HasForeignKey(cm => cm.ChatId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Chat>()
-                .HasMany(c => c.Participants)
-                .WithOne(cp => cp.Chat)
-                .HasForeignKey(cp => cp.ChatId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            // ChatMessage
-            modelBuilder.Entity<ChatMessage>()
-                .HasOne(cm => cm.User)
-                .WithMany(u => u.ChatMessages)
-                .HasForeignKey(cm => cm.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
-            // ChatParticipant
-            modelBuilder.Entity<ChatParticipant>()
-                .HasOne(cp => cp.User)
-                .WithMany(u => u.ChatParticipants)
-                .HasForeignKey(cp => cp.UserId)
-                .OnDelete(DeleteBehavior.NoAction);
-
             // Quest
             modelBuilder.Entity<Quest>()
                 .HasOne(q => q.Author)
                 .WithMany(u => u.Quests)
                 .HasForeignKey(q => q.AuthorId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Quest>()
-                .HasOne(q => q.Genre)
-                .WithMany(g => g.Quests)
-                .HasForeignKey(q => q.GenreId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Quest>()
@@ -120,12 +83,6 @@ namespace Infrastructure.Data
                 .WithMany(q => q.QuestTasks)
                 .HasForeignKey(qt => qt.QuestId)
                 .OnDelete(DeleteBehavior.NoAction);
-
-            modelBuilder.Entity<QuestTask>()
-                .HasOne(qt => qt.Genre)
-                .WithMany(g => g.Tasks)
-                .HasForeignKey(qt => qt.GenreId)
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<QuestTask>()
                 .HasMany(qt => qt.TaskOptions)

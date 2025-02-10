@@ -59,6 +59,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ISocialAuthService, SocialAuthService>();
 builder.Services.AddScoped<IUserProfileService, UserProfileService>();
 builder.Services.AddScoped<IFileStorageService, AzureBlobStorageService>();
+builder.Services.AddScoped<IQuestConstructorService, QuestConstructorService>();
 
 // Configuring authentication with Google and Facebook
 builder.Services.AddAuthentication(options =>

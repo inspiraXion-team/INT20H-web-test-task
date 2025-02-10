@@ -12,8 +12,6 @@ namespace Domain.Entities
         public int Order { get; set; }
         public int QuestId { get; set; }
         public Quest Quest { get; set; }
-        public int GenreId { get; set; }
-        public Genre Genre { get; set; }
         public IEnumerable<TaskOption> TaskOptions { get; set; } = Enumerable.Empty<TaskOption>();
         public TaskWrite? TaskWrite { get; set; } = null!;
         public TaskImage? Image { get; set; } = null!;
