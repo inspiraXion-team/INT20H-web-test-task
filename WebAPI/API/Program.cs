@@ -28,6 +28,19 @@ if (string.IsNullOrEmpty(dbConnectionString) ||
     throw new ArgumentException("Not all necessary environment variables were found in the .env file.");
 }
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials()
+                  .WithExposedHeaders("Connection", "Upgrade");
+        });
+});
+
 // Adding database connection using the value from .env
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(dbConnectionString, sqlOptions =>
@@ -67,6 +80,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCors("AllowAll");
 
 // Configuring the HTTP request pipeline
 if (app.Environment.IsDevelopment())
