@@ -1,23 +1,26 @@
-import { useLocation } from 'react-router-dom';
+import React from 'react';
+import { useLocation, Link } from 'react-router-dom';
 import QuestCard from '../components/QuestCard.jsx';
 import { isHomeRoute } from '../lib/routes';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules'; // Імпорт модулів Swiper
-import 'swiper/css'; // Основні стилі Swiper
-import 'swiper/css/navigation'; // Стилі для кнопок навігації
-import 'swiper/css/autoplay'; // Стилі для автопрокрутки
+import { Navigation, Autoplay } from 'swiper/modules'; // Import Swiper modules
+import 'swiper/css'; // Swiper core styles
+import 'swiper/css/navigation'; // Navigation styles
+import 'swiper/css/autoplay'; // Autoplay styles
 import news1 from '../assets/news1.png';
 import news2 from '../assets/news2.png';
 import news3 from '../assets/news3.png';
 import news4 from '../assets/news4.png';
 import news5 from '../assets/news5.png';
-import quest1 from '../assets/quest-1.jpg'; // Ensure you have these images
+import quest1 from '../assets/quest-1.jpg';
 import quest2 from '../assets/quest-2.jpg';
 import quest3 from '../assets/quest-3.jpg';
 import quest4 from '../assets/quest-4.jpg';
 import quest5 from '../assets/quest-5.jpg';
 import quest6 from '../assets/quest-6.jpg';
 import quest7 from '../assets/quest-7.jpg';
+import { Button } from 'react-bootstrap'; // Import Button from react-bootstrap
+import { ROUTES } from '../lib/routes'; // Ensure you have the ROUTES defined
 
 function HomePage() {
     const location = useLocation();
@@ -33,11 +36,11 @@ function HomePage() {
     ];
 
     const newQuests = [
-        { title: 'News', image: news1 },
-        { title: 'News', image: news2 },
-        { title: 'News', image: news3 },
-        { title: 'News', image: news4 },
-        { title: 'News', image: news5 },
+        { title: 'News1', image: news1 },
+        { title: 'News2', image: news2 },
+        { title: 'News3', image: news3 },
+        { title: 'News4', image: news4 },
+        { title: 'News5', image: news5 },
     ];
 
     return (
@@ -49,7 +52,18 @@ function HomePage() {
                         <p style={styles.heroText}>
                             With Quespiration, you can create quests for education, teambuilding, and for fun!
                         </p>
-                        <button style={styles.createQuestButton}>Create a Quest</button>
+                        {/* Create a Quest Button */}
+                        <Button
+                            variant="outline-primary"
+                            size="sm"
+                            style={styles.buttonStyle}
+                            onMouseEnter={(e) => e.currentTarget.style.borderColor = styles.buttonHover.borderColor}
+                            onMouseLeave={(e) => e.currentTarget.style.borderColor = 'transparent'}
+                            as={Link} // Use Link component for navigation
+                            to={ROUTES.AUTH} // Navigate to Auth.jsx
+                        >
+                            Create a Quest
+                        </Button>
                     </div>
                 </section>
 
@@ -70,13 +84,13 @@ function HomePage() {
                     <div style={styles.container}>
                         <h2 style={styles.sectionTitle}>What's new?</h2>
                         <Swiper
-                            modules={[Navigation, Autoplay]} // Підключення модулів навігації та автопрокрутки
+                            modules={[Navigation, Autoplay]} // Connect navigation and autoplay modules
                             spaceBetween={20}
                             slidesPerView={3}
                             navigation={{ nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }}
                             autoplay={{
-                                delay: 5000, // Інтервал автопрокрутки (5 секунд)
-                                disableOnInteraction: false, // Продовжувати автопрокрутку після взаємодії користувача
+                                delay: 5000, // Autoplay interval (5 seconds)
+                                disableOnInteraction: false, // Continue autoplay after user interaction
                             }}
                             breakpoints={{
                                 320: { slidesPerView: 1 },
@@ -108,7 +122,7 @@ const styles = {
         minHeight: '100vh',
     },
     heroSection: {
-        background: 'linear-gradient(rgba(4, 0, 112, 0.7), rgba(107, 0, 184, 0.7)), url("./path/to/hero-background.jpg")', // Додайте фоновий зображення
+        background: 'linear-gradient(rgba(4, 0, 112, 0.7), rgba(107, 0, 184, 0.7)), url("./path/to/hero-background.jpg")', // Add your background image path
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         padding: '150px 0',
@@ -131,17 +145,6 @@ const styles = {
         color: 'white',
         marginBottom: '40px',
         textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)',
-    },
-    createQuestButton: {
-        backgroundColor: '#17a2b8',
-        border: 'none',
-        padding: '15px 30px',
-        fontSize: '1.25rem',
-        transition: 'background-color 0.3s, transform 0.2s',
-        color: 'white',
-        cursor: 'pointer',
-        borderRadius: '5px',
-        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2)',
     },
     section: {
         padding: '60px 0',
@@ -167,7 +170,7 @@ const styles = {
         transition: 'color 0.3s',
     },
     customBgColor: {
-        backgroundColor: 'rgba(255, 255, 255, 0.1)', // Напівпрозорий білий фон
+        backgroundColor: 'rgba(255, 255, 255, 0.1)', // Semi-transparent white background
         borderRadius: '10px',
         padding: '40px 20px',
     },
@@ -180,7 +183,7 @@ const styles = {
     questCardContainer: {
         flex: '1 1 calc(25% - 20px)', // 4 cards per row
         maxWidth: 'calc(25% - 20px)',
-        minWidth: '250px', // Мінімальна ширина картки
+        minWidth: '250px', // Minimum width for card
     },
 };
 

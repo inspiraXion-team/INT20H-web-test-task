@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { isAuthRoute } from '../../lib/routes';
 import "./Auth.css";
 
+
 const Auth = () => {
   const location = useLocation();
   const [isLoginMode, setIsLoginMode] = useState(false);
