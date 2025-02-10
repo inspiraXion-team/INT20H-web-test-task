@@ -185,7 +185,10 @@ namespace Infrastructure.Services
                 {
                     taskId = task.Id,
                     title = task.Title,
-                    options = task.TaskOptions.Select(o => o.OptionText).ToArray()
+                    options = task.TaskOptions?.Select(o => o.OptionText).ToArray(),
+                    write = task.TaskWrite?.Answer,
+                    image = task.TaskImage?.ImageURL,
+                    media = task.MediaContents?.Select(m => m.URL).ToArray()
                 });
             }
         }
