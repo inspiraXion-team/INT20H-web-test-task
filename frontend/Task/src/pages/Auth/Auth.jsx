@@ -34,23 +34,83 @@ const Auth = () => {
     setIsLoginMode(!isLoginMode);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = {
+      username: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+  
+    // Перевірка на відповідність паролів під час реєстрації
+    if (!isLoginMode) {
+      const confirmPassword = formData.get("confirmPassword");
+      if (data.password !== confirmPassword) {
+        alert("Passwords do not match.");
+        return;
+      }
+      await sendSignUpDataToBackend(data);
+    } else {
+      await sendLoginDataToBackend(data);
+    }
   };
+  
 
-  // Функція для відправки даних на сервер
-  const sendDataToBackend = async (data) => {
-    try {
-      const response = await axios.post("http://localhost:8080/api/auth/register", data, {
+// Функція для відправки даних на сервер
+const sendSignUpDataToBackend = async (data) => {
+  try {
+    // Перевірка наявності обов'язкових полів
+    if (!data.username || !data.email || !data.password) {
+      console.error("Відсутні обов'язкові поля для реєстрації.");
+      return;
+    }
+
+    const response = await axios.post(
+      "http://localhost:8080/api/auth/register",
+      JSON.stringify(data), 
+      {
         headers: {
           "Content-Type": "application/json",
         },
-      });
-      console.log("Server Response:", response.data);
-    } catch (error) {
+      }
+    );
+    console.log("Server Response:", response.data);
+  } catch (error) {
+    if (error.response) {
+      console.error(`Error ${error.response.status}:`, error.response.data);
+    } else {
       console.error("Error sending data to server:", error);
     }
-  };
+  }
+};
+
+const sendLoginDataToBackend = async (data) => {
+  try {
+    // Перевірка наявності обов'язкових полів
+    if (!data.email || !data.password) {
+      console.error("Відсутні обов'язкові поля для входу.");
+      return;
+    }
+
+    const response = await axios.post(
+      "http://localhost:8080/api/auth/login",
+      JSON.stringify(data), 
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Server Response:", response.data);
+  } catch (error) {
+    if (error.response) {
+      console.error(`Error ${error.response.status}:`, error.response.data);
+    } else {
+      console.error("Error sending data to server:", error);
+    }
+  }
+};
 
   // Обробка успішної авторизації через Google
   const handleGoogleSignUpSuccess = async (credentialResponse) => {
@@ -61,13 +121,14 @@ const Auth = () => {
 
     // Формуємо об'єкт для відправки на сервер
     const userData = {
-      username: decodedToken.name || decodedToken.email.split("@")[0], // Використовуємо ім'я або частину email
+      username: decodedToken.name || decodedToken.email.split("@")[0],
       email: decodedToken.email,
-      password: "default_password", // Ви можете генерувати випадковий пароль або використовувати токен
+      password: "default_password",
     };
 
     // Відправка даних на сервер
-    await sendDataToBackend(userData);
+    await sendSignUpDataToBackend(userData);
+    
   };
 
   const handleGoogleSignUpError = () => {
@@ -112,7 +173,7 @@ const handleFacebookSignUp = () => {
                   providerId: userData.id
                 };
     
-                await sendDataToBackend(userDataForServer);
+                await sendSignUpDataToBackend(userDataForServer);
               } else {
                 console.error("Email not provided by Facebook.");
                 setIsEmailRequired(true);
@@ -133,8 +194,43 @@ const handleFacebookSignUp = () => {
   );
 };
 
+useEffect(() => {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (refreshToken) {
+    refreshAccessToken();
+  }
+}, []);
+
+// Функція для рефрешу токену
+const refreshAccessToken = async () => {
+  const refreshToken = localStorage.getItem("refreshToken");
+
+  if (!refreshToken) {
+    console.error("No refresh token found.");
+    return;
+  }
+
+  try {
+    const response = await axios.post(
+      "http://localhost:8080/api/auth/refresh-token",
+      { refreshToken },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Refreshed Token:", response.data);
+    // Зберігаємо новий access token
+    localStorage.setItem("accessToken", response.data.accessToken);
+  } catch (error) {
+    console.error("Error refreshing token:", error);
+  }
+};
+
+
 // Login handler functions
-const handleFacebookLogin = () => {
+const handleFacebookLogin = async () => {
   if (!window.FB) {
     console.error("Facebook SDK not loaded");
     return;
@@ -149,33 +245,23 @@ const handleFacebookLogin = () => {
           "/me",
           { fields: "id, email" },
           async (userData) => {
-            // Log the entire userData object to see what we're getting
-            console.log("Facebook user data:", userData);
-            
-            if (userData) {
-              // Log individual fields
-              //console.log("User ID:", userData.id);
-              if (userData.email){
-                console.log("User Email:", userData.email);
-              }
-              
-              if (userData.email) {
-                // Формування даних для сервера
-                const userDataForServer = {
-                  username: userData.name || `fb_user_${userData.id}`,
-                  email: userData.email,
-                  password: "default_password",
-                  provider: "facebook",
-                  providerId: userData.id
-                };
-    
-                await sendDataToBackend(userDataForServer);
-              } else {
-                console.error("Email not provided by Facebook.");
-                setIsEmailRequired(true);
-              }
+            if (userData && userData.email) {
+              const userDataForServer = {
+                username: userData.name || `fb_user_${userData.id}`,
+                email: userData.email,
+                password: "default_password",
+                provider: "facebook",
+                providerId: userData.id
+              };
+
+              await sendLoginDataToBackend(userDataForServer);
+
+              // Зберігаємо refreshToken у локальному сховищі
+              const refreshToken = response.authResponse.refresh_token; // Отримання refresh_token
+              localStorage.setItem("refreshToken", refreshToken);
             } else {
-              console.error("No user data received from Facebook");
+              console.error("Email not provided by Facebook.");
+              setIsEmailRequired(true);
             }
           }
         );
@@ -185,7 +271,7 @@ const handleFacebookLogin = () => {
     },
     { 
       scope: "public_profile,email",
-      return_scopes: true // This will show what permissions were granted
+      return_scopes: true
     }
   );
 };
@@ -197,13 +283,17 @@ const handleGoogleLoginSuccess = async (credentialResponse) => {
 
   // Формуємо об'єкт для відправки на сервер
   const userData = {
-    username: decodedToken.name || decodedToken.email.split("@")[0], // Використовуємо ім'я або частину email
+    username: decodedToken.name || decodedToken.email.split("@")[0],
     email: decodedToken.email,
-    password: "default_password", // Ви можете генерувати випадковий пароль або використовувати токен
+    password: "default_password",
   };
 
   // Відправка даних на сервер
-  await sendDataToBackend(userData);
+  await sendLoginDataToBackend(userData);
+
+  // Зберігаємо refreshToken у локальному сховищі
+  const refreshToken = decodedToken.refresh_token; // Припускаємо, що refresh_token є частиною декодованого токену
+  localStorage.setItem("refreshToken", refreshToken);
 };
 
 const handleGoogleLoginError = () => {
@@ -222,8 +312,8 @@ const handleGoogleLoginError = () => {
     };
 
     // Відправка даних на сервер
-    await sendDataToBackend(userData);
-
+    await sendSignUpDataToBackend(userData);
+    await sendLoginDataToBackend(userData);
     setIsEmailRequired(false); // Закриваємо модальне вікно
   };
 
@@ -233,8 +323,8 @@ const handleGoogleLoginError = () => {
         <div className={`slide-container ${isLoginMode ? "sign-in-mode" : ""}`}>
           <div className="forms-container">
             <div className="signin-signup">
-              <form onSubmit={handleSubmit} className="sign-up-form">
-                <h2>Create Account</h2>
+            <form onSubmit={handleSubmit} className="sign-up-form">
+            <h2>Create Account</h2>
                 <div className="social-buttons">
                   <div className="social-button">
                     <GoogleLogin
@@ -259,17 +349,15 @@ const handleGoogleLoginError = () => {
                   )}
                 </div>
                 <p>Or use your email for registration</p>
-                <input type="text" placeholder="Name" required />
-                <input type="email" placeholder="Email" required />
-                <input type="password" placeholder="Password" required />
-                <input type="password" placeholder="Password again" required />
-                <button type="submit" className="auth-button">
-                  Sign Up
-                </button>
+                <input type="text" name="name" placeholder="Name" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
+                <input type="password" name="confirmPassword" placeholder="Password again" required />
+                <button type="submit" className="auth-button">Sign Up</button>
               </form>
 
               <form onSubmit={handleSubmit} className="sign-in-form">
-                <h2>Log In</h2>
+              <h2>Log In</h2>
                 <div className="social-buttons">
                   <div className="social-button">
                     <GoogleLogin
@@ -295,12 +383,10 @@ const handleGoogleLoginError = () => {
                   )}
                 </div>
                 <p>Or use your email for login</p>
-                <input type="email" placeholder="Email" required />
-                <input type="password" placeholder="Password" required />
+                <input type="email" name="email" placeholder="Email" required />
+                <input type="password" name="password" placeholder="Password" required />
                 <div className="forgot-password">Forgot your password?</div>
-                <button type="submit" className="auth-button">
-                  Log In
-                </button>
+                <button type="submit" className="auth-button">Log In</button>
               </form>
             </div>
           </div>
