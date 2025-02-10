@@ -1,12 +1,16 @@
-import { Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
+import { Route, Routes } from 'react-router-dom';
+
 import Footer from './components/Footer';
-import HomePage from './pages/HomePage';
-import Auth from './pages/Auth/Auth';
+import Header from './components/Header';
 import ROUTES from './lib/routes';
-import Profile from './pages/MyProfile.jsx';
+import Auth from './pages/Auth/Auth';
 import CompletedQuests from './pages/CompletedQuests.jsx';
+import HomePage from './pages/HomePage';
 import Logout from './pages/Logout.jsx';
+import Profile from './pages/MyProfile.jsx';
+import Quest from './pages/Quest/Quest.jsx';
+import QuestPreview from './pages/QuestPreview/QuestPreview.jsx';
+
 import './App.css';
 
 function App() {
@@ -20,6 +24,8 @@ function App() {
           <Route path={ROUTES.PROFILE} element={<Profile />} />
           <Route path={ROUTES.COMPLETED_QUESTS} element={<CompletedQuests />} />
           <Route path={ROUTES.LOGOUT} element={<Logout />} />
+          <Route path={ROUTES.QUEST_PREVIEW} element={<QuestPreview />} />
+          <Route path={ROUTES.QUEST} element={<Quest />} />
         </Routes>
       </main>
       <Footer />

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios"; // Додаємо axios
 import { useLocation } from "react-router-dom";
 import { isAuthRoute } from "../../lib/routes";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
@@ -37,46 +38,193 @@ const Auth = () => {
     e.preventDefault();
   };
 
-  const handleGoogleLoginSuccess = (credentialResponse) => {
+  // Функція для відправки даних на сервер
+  const sendDataToBackend = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:8080/api/auth/register", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Server Response:", response.data);
+    } catch (error) {
+      console.error("Error sending data to server:", error);
+    }
+  };
+
+  // Обробка успішної авторизації через Google
+  const handleGoogleSignUpSuccess = async (credentialResponse) => {
     console.log("Google Login Success:", credentialResponse);
     const decodedToken = jwtDecode(credentialResponse.credential);
     console.log("User Email:", decodedToken.email);
     console.log("User Name:", decodedToken.name);
+
+    // Формуємо об'єкт для відправки на сервер
+    const userData = {
+      username: decodedToken.name || decodedToken.email.split("@")[0], // Використовуємо ім'я або частину email
+      email: decodedToken.email,
+      password: "default_password", // Ви можете генерувати випадковий пароль або використовувати токен
+    };
+
+    // Відправка даних на сервер
+    await sendDataToBackend(userData);
   };
 
-  const handleGoogleLoginError = () => {
+  const handleGoogleSignUpError = () => {
     console.error("Google Login Failed");
   };
 
-  const handleFacebookLogin = () => {
-    if (!window.FB) {
-      console.error("Facebook SDK not loaded");
-      return;
-    }
+  // Обробка авторизації через Facebook
+  
+const handleFacebookSignUp = () => {
+  if (!window.FB) {
+    console.error("Facebook SDK not loaded");
+    return;
+  }
 
-    window.FB.login(
-      (response) => {
-        if (response.authResponse) {
-          console.log("Fetching user information...");
-          window.FB.api("/me", { fields: "name,email" }, (userData) => {
-            if (userData.email) {
-              console.log("User Email:", userData.email);
-              // Тут можна використовувати email
-            } else {
-              console.error("Email not provided by Facebook.");
-              setIsEmailRequired(true); // Показуємо форму для введення email вручну
-            }
-
-            if (userData.name) {
+  window.FB.login(
+    (response) => {
+      if (response.authResponse) {
+        console.log("Facebook auth response:", response.authResponse);
+        
+        window.FB.api(
+          "/me",
+          { fields: "id,name,email" },
+          async (userData) => {
+            // Log the entire userData object to see what we're getting
+            console.log("Facebook user data:", userData);
+            
+            if (userData) {
+              // Log individual fields
+              //console.log("User ID:", userData.id);
               console.log("User Name:", userData.name);
+              if (userData.email){
+                console.log("User Email:", userData.email);
+              }
+              
+              if (userData.email) {
+                // Формування даних для сервера
+                const userDataForServer = {
+                  username: userData.name || `fb_user_${userData.id}`,
+                  email: userData.email,
+                  password: "default_password",
+                  provider: "facebook",
+                  providerId: userData.id
+                };
+    
+                await sendDataToBackend(userDataForServer);
+              } else {
+                console.error("Email not provided by Facebook.");
+                setIsEmailRequired(true);
+              }
+            } else {
+              console.error("No user data received from Facebook");
             }
-          });
-        } else {
-          console.log("User cancelled login or did not fully authorize.");
-        }
-      },
-      { scope: "public_profile,email" }
-    );
+          }
+        );
+      } else {
+        console.log("User cancelled login or did not fully authorize.");
+      }
+    },
+    { 
+      scope: "public_profile,email",
+      return_scopes: true // This will show what permissions were granted
+    }
+  );
+};
+
+// Login handler functions
+const handleFacebookLogin = () => {
+  if (!window.FB) {
+    console.error("Facebook SDK not loaded");
+    return;
+  }
+
+  window.FB.login(
+    (response) => {
+      if (response.authResponse) {
+        console.log("Facebook auth response:", response.authResponse);
+        
+        window.FB.api(
+          "/me",
+          { fields: "id, email" },
+          async (userData) => {
+            // Log the entire userData object to see what we're getting
+            console.log("Facebook user data:", userData);
+            
+            if (userData) {
+              // Log individual fields
+              //console.log("User ID:", userData.id);
+              if (userData.email){
+                console.log("User Email:", userData.email);
+              }
+              
+              if (userData.email) {
+                // Формування даних для сервера
+                const userDataForServer = {
+                  username: userData.name || `fb_user_${userData.id}`,
+                  email: userData.email,
+                  password: "default_password",
+                  provider: "facebook",
+                  providerId: userData.id
+                };
+    
+                await sendDataToBackend(userDataForServer);
+              } else {
+                console.error("Email not provided by Facebook.");
+                setIsEmailRequired(true);
+              }
+            } else {
+              console.error("No user data received from Facebook");
+            }
+          }
+        );
+      } else {
+        console.log("User cancelled login or did not fully authorize.");
+      }
+    },
+    { 
+      scope: "public_profile,email",
+      return_scopes: true // This will show what permissions were granted
+    }
+  );
+};
+
+const handleGoogleLoginSuccess = async (credentialResponse) => {
+  console.log("Google Login Success:", credentialResponse);
+  const decodedToken = jwtDecode(credentialResponse.credential);
+  console.log("User Email:", decodedToken.email);
+
+  // Формуємо об'єкт для відправки на сервер
+  const userData = {
+    username: decodedToken.name || decodedToken.email.split("@")[0], // Використовуємо ім'я або частину email
+    email: decodedToken.email,
+    password: "default_password", // Ви можете генерувати випадковий пароль або використовувати токен
+  };
+
+  // Відправка даних на сервер
+  await sendDataToBackend(userData);
+};
+
+const handleGoogleLoginError = () => {
+  console.error("Google Login Failed");
+};
+
+  // Обробка введення email вручну
+  const handleManualEmailSubmit = async () => {
+    console.log("Manual Email:", manualEmail);
+
+    // Формуємо об'єкт для відправки на сервер
+    const userData = {
+      username: manualEmail.split("@")[0], // Використовуємо частину email як username
+      email: manualEmail,
+      password: "default_password", // Ви можете генерувати випадковий пароль
+    };
+
+    // Відправка даних на сервер
+    await sendDataToBackend(userData);
+
+    setIsEmailRequired(false); // Закриваємо модальне вікно
   };
 
   return (
@@ -90,8 +238,8 @@ const Auth = () => {
                 <div className="social-buttons">
                   <div className="social-button">
                     <GoogleLogin
-                      onSuccess={handleGoogleLoginSuccess}
-                      onError={handleGoogleLoginError}
+                      onSuccess={handleGoogleSignUpSuccess}
+                      onError={handleGoogleSignUpError}
                       useOneTap
                       shape="rectangular"
                       width="300"
@@ -103,7 +251,7 @@ const Auth = () => {
                       <button
                         type="button"
                         className="facebook-login-button"
-                        onClick={handleFacebookLogin}
+                        onClick={handleFacebookSignUp}
                       >
                         Continue with Facebook
                       </button>
@@ -189,14 +337,7 @@ const Auth = () => {
                   placeholder="Enter your email"
                   required
                 />
-                <button
-                  onClick={() => {
-                    console.log("Manual Email:", manualEmail); // Обробляємо введений email
-                    setIsEmailRequired(false); // Закриваємо модальне вікно
-                  }}
-                >
-                  Submit Email
-                </button>
+                <button onClick={handleManualEmailSubmit}>Submit Email</button>
               </div>
             </div>
           )}

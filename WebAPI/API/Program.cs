@@ -28,12 +28,15 @@ if (string.IsNullOrEmpty(dbConnectionString) ||
     throw new ArgumentException("Not all necessary environment variables were found in the .env file.");
 }
 
+// Debugging: Print loaded DB Connection String
+Console.WriteLine("Loaded DB Connection String: " + dbConnectionString);
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
+    options.AddPolicy("AllowSpecificOrigins",
         policy =>
         {
-            policy.AllowAnyOrigin()
+            policy.WithOrigins("http://localhost:5173", "http://localhost:4173")  // Вказуємо дозволені джерела
                   .AllowAnyHeader()
                   .AllowAnyMethod()
                   .AllowCredentials()
@@ -81,7 +84,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
+// Use the specific CORS policy that we configured
+app.UseCors("AllowSpecificOrigins");
 
 // Configuring the HTTP request pipeline
 if (app.Environment.IsDevelopment())
