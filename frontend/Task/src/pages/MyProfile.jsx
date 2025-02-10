@@ -1,20 +1,13 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { isProfileRoute, getProfileRoute } from '../lib/routes';
-
-const Profile = () => {
-  const location = useLocation(); // Отримуємо інформацію про поточний URL
-
-  // Стан для зберігання даних профілю
-=======
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Додано для навігації
 
 const Profile = () => {
+  const location = useLocation(); // Отримуємо інформацію про поточний URL
   const navigate = useNavigate(); // Хук для навігації
 
->>>>>>> origin/my-feature-yulia
+  // Стан для зберігання даних профілю
   const [profile, setProfile] = useState({
     name: 'John Doe',
     email: 'john.doe@example.com',
@@ -57,7 +50,7 @@ const Profile = () => {
     console.log('Profile updated:', profile);
   };
 
-<<<<<<< HEAD
+
   useEffect(() => {
     // Перевіряємо, чи поточний роут є роутом профілю
     if (isProfileRoute(location.pathname)) {
@@ -65,7 +58,7 @@ const Profile = () => {
       console.log('Profile route:', getProfileRoute());
     }
   }, [location]);
-=======
+
   // Вбудовані стилі
   const styles = {
     profilePage: {
@@ -210,7 +203,6 @@ const Profile = () => {
   const handleMouseOut = (e) => {
     e.currentTarget.style.transform = 'scale(1)';
   };
->>>>>>> origin/my-feature-yulia
 
   return (
     <div style={styles.profilePage}>
@@ -351,7 +343,7 @@ const Profile = () => {
   );
 };
 
-<<<<<<< HEAD
+
 // Стилі в JavaScript (inline styles)
 const styles = {
   profilePage: {
@@ -469,6 +461,4 @@ const styles = {
 };
 
 export default Profile;
-=======
-export default Profile;
->>>>>>> origin/my-feature-yulia
+

@@ -69,36 +69,7 @@ function Header() {
               </div>
 
               {/* Фото користувача з випадаючим списком */}
-<<<<<<< HEAD
-              <div className="dropdown">
-  <img
-    src={userPhoto}
-    alt="User"
-    className="user-photo rounded-circle"
-    data-bs-toggle="dropdown"
-    aria-expanded="false"
-  />
-                  <ul className="dropdown-menu dropdown-menu-end">
-    <li>
-      <Link className="dropdown-item" to={ROUTES.PROFILE}>
-        My Profile
-      </Link>
-    </li>
-    <li>
-      <Link className="dropdown-item" to={ROUTES.COMPLETED_QUESTS}>
-        Completed Quests
-      </Link>
-    </li>
-    <li>
-      <Link className="dropdown-item" to={ROUTES.LOGOUT}>
-        Log Out
-      </Link>
-    </li>
-  </ul>
-              </div>
-            </div>
-          </div>
-=======
+
               <Dropdown align="end">
                 <Dropdown.Toggle as="div" className="user-dropdown">
                   <img
@@ -108,7 +79,7 @@ function Header() {
                     className="rounded-circle"
                   />
                 </Dropdown.Toggle>
->>>>>>> origin/my-feature-yulia
+
 
                 <Dropdown.Menu style={styles.dropdownMenu}>
                   <Dropdown.Item as={Link} to="/profile" style={styles.dropdownItem}>
