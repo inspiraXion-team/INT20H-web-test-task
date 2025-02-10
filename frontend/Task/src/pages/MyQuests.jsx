@@ -17,9 +17,21 @@ const MyQuests = () => {
     navigate(`/quest-details/${questId}`);
   };
 
+  // Функція для переходу на сторінку конструктора квестів
+  const handleGoToConstructor = () => {
+    navigate('/constructor-of-quests');
+  };
+
   return (
     <div style={styles.container}>
-      <h1>Мої квести</h1>
+
+      {/* Кнопка для переходу на сторінку конструктора квестів */}
+      <button
+        style={styles.constructorButton}
+        onClick={handleGoToConstructor}
+      >
+        Constructor Of Quests
+      </button>
 
       {/* Список квестів */}
       <div style={styles.questsList}>
@@ -49,6 +61,16 @@ const styles = {
     margin: '0 auto',
     textAlign: 'center',
   },
+  constructorButton: {
+    backgroundColor: '#2196F3',
+    color: 'white',
+    padding: '10px 20px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    fontSize: '16px',
+    marginBottom: '20px',
+  },
   questsList: {
     display: 'flex',
     flexDirection: 'column',
@@ -63,7 +85,7 @@ const styles = {
     transition: 'transform 0.2s, box-shadow 0.2s',
   },
   detailsButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#4CAF50',
     color: 'white',
     padding: '10px 20px',
     border: 'none',
