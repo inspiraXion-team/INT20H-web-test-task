@@ -126,7 +126,7 @@ namespace Infrastructure.Data
             // TaskImage
             modelBuilder.Entity<TaskImage>()
                 .HasOne(ti => ti.Task)
-                .WithOne(qt => qt.Image)
+                .WithOne(qt => qt.TaskImage)
                 .HasForeignKey<TaskImage>(ti => ti.TaskId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

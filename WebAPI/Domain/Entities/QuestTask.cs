@@ -14,7 +14,7 @@ namespace Domain.Entities
         public Quest Quest { get; set; }
         public IEnumerable<TaskOption> TaskOptions { get; set; } = Enumerable.Empty<TaskOption>();
         public TaskWrite? TaskWrite { get; set; } = null!;
-        public TaskImage? Image { get; set; } = null!;
+        public TaskImage? TaskImage { get; set; } = null!;
         public IEnumerable<MediaContent> MediaContents { get; set; } = Enumerable.Empty<MediaContent>();
         public IEnumerable<TaskProgress> TaskProgresses { get; set; }
     }
