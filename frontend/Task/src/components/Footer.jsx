@@ -35,7 +35,7 @@ function Footer() {
  
           <div className="text-center mt-4 text-white">
             <p className="mb-0">Copyright (C) Quespiration Corporation</p>
-            <p className="mb-0">2023 | All rights reserved</p>
+            <p className="mb-0">2025 | All rights reserved</p>
           </div>
         </div>
       </footer>

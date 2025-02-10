@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { isProfileRoute, getProfileRoute } from '../lib/routes';
@@ -6,17 +7,24 @@ const Profile = () => {
   const location = useLocation(); // Отримуємо інформацію про поточний URL
 
   // Стан для зберігання даних профілю
+=======
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Додано для навігації
+
+const Profile = () => {
+  const navigate = useNavigate(); // Хук для навігації
+
+>>>>>>> origin/my-feature-yulia
   const [profile, setProfile] = useState({
     name: 'John Doe',
     email: 'john.doe@example.com',
     bio: 'Quest Creator | Adventure Seeker',
-    avatar: 'https://via.placeholder.com/150', // Заглушка для аватара
+    avatar: 'https://via.placeholder.com/150',
     createdQuests: 5,
     completedQuests: 12,
     achievements: ['First Quest', 'Explorer', 'Master Creator'],
   });
 
-  // Стан для редагування
   const [isEditing, setIsEditing] = useState(false);
 
   // Обробник зміни даних
@@ -46,10 +54,10 @@ const Profile = () => {
   // Збереження змін
   const handleSave = () => {
     setIsEditing(false);
-    // Тут можна додати логіку для збереження даних на сервер
     console.log('Profile updated:', profile);
   };
 
+<<<<<<< HEAD
   useEffect(() => {
     // Перевіряємо, чи поточний роут є роутом профілю
     if (isProfileRoute(location.pathname)) {
@@ -57,31 +65,180 @@ const Profile = () => {
       console.log('Profile route:', getProfileRoute());
     }
   }, [location]);
+=======
+  // Вбудовані стилі
+  const styles = {
+    profilePage: {
+      maxWidth: "800px",
+      margin: "50px auto",
+      backgroundColor: "#fff",
+      borderRadius: "10px",
+      boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+      padding: "20px",
+    },
+    profileCard: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    },
+    profileHeader: {
+      display: "flex",
+      alignItems: "center",
+      marginBottom: "20px",
+    },
+    avatarContainer: {
+      position: "relative",
+      marginRight: "20px",
+    },
+    avatarUploadLabel: {
+      cursor: "pointer",
+    },
+    profileAvatar: {
+      width: "150px",
+      height: "150px",
+      borderRadius: "50%",
+      objectFit: "cover",
+    },
+    uploadText: {
+      position: "absolute",
+      bottom: "10px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      backgroundColor: "rgba(0, 0, 0, 0.5)",
+      color: "#fff",
+      padding: "5px",
+      borderRadius: "5px",
+    },
+    profileInfo: {
+      textAlign: "left",
+    },
+    profileStats: {
+      display: "flex",
+      justifyContent: "space-around",
+      width: "100%",
+      margin: "20px 0",
+    },
+    statItem: {
+      textAlign: "center",
+    },
+    profileDetails: {
+      width: "100%",
+      marginBottom: "20px",
+    },
+    formGroup: {
+      marginBottom: "15px",
+    },
+    input: {
+      width: "100%",
+      padding: "10px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+    },
+    textarea: {
+      width: "100%",
+      padding: "10px",
+      borderRadius: "5px",
+      border: "1px solid #ccc",
+      resize: "vertical",
+    },
+    achievementsSection: {
+      width: "100%",
+      marginBottom: "20px",
+    },
+    achievementsList: {
+      listStyleType: "none",
+      padding: 0,
+    },
+    achievementItem: {
+      backgroundColor: "#f0f0f0",
+      margin: "5px 0",
+      padding: "10px",
+      borderRadius: "5px",
+    },
+    profileActions: {
+      display: "flex",
+      flexDirection: "column",
+      gap: "15px",
+      alignItems: "center", // Вирівнювання по центру
+      marginTop: "20px",
+    },
+    saveButton: {
+      padding: "10px 20px",
+      backgroundColor: "#007bff",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginRight: "10px",
+    },
+    editButton: {
+      padding: "10px 20px",
+      backgroundColor: "#28a745",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      marginLeft: "10px",
+    },
+    questButton: {
+      padding: "10px 20px",
+      backgroundColor: "#6c757d",
+      color: "#fff",
+      border: "none",
+      borderRadius: "5px",
+      cursor: "pointer",
+      margin: "5px",
+    },
+    constructorButton: {
+      width: '100%', // Широка кнопка
+      backgroundColor: '#2196F3', // Синій колір для виділення
+      marginTop: '20px', // Відступ зверху
+      color: 'white',
+      padding: '10px',
+      border: 'none',
+      borderRadius: '5px',
+      cursor : 'pointer',
+      fontSize: '16px',
+      transition: 'background-color 0.3s, transform 0.2s',
+    },
+  };
+
+  const handleMouseOver = (e) => {
+    e.currentTarget.style.transform = 'scale(1.05)';
+  };
+
+  const handleMouseOut = (e) => {
+    e.currentTarget.style.transform = 'scale(1)';
+  };
+>>>>>>> origin/my-feature-yulia
 
   return (
     <div style={styles.profilePage}>
       <div style={styles.profileCard}>
         <div style={styles.profileHeader}>
-          {/* Аватар з можливістю завантаження нового фото */}
-          <label htmlFor="avatar-upload" style={styles.avatarUploadLabel}>
-            <img
-              src={profile.avatar}
-              alt="Profile Avatar"
-              style={styles.profileAvatar}
+          <div style={styles.avatarContainer}>
+            <label htmlFor="avatar-upload" style={styles.avatarUploadLabel}>
+              <img
+                src={profile.avatar}
+                alt="Profile Avatar"
+                style={styles.profileAvatar}
+              />
+              {isEditing && (
+                <div style={styles.uploadText}>Завантажити нове фото</div>
+              )}
+            </label>
+            <input
+              id="avatar-upload"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handleFileUpload}
             />
-            {isEditing && (
-              <div style={styles.uploadText}>Завантажити нове фото</div>
-            )}
-          </label>
-          <input
-            id="avatar-upload"
-            type="file"
-            accept="image/*" // Дозволяє вибирати лише зображення
-            style={{ display: 'none' }} // Приховуємо стандартний input
-            onChange={handleFileUpload}
-          />
-          <h2>{profile.name}</h2>
-          <p>{profile.bio}</p>
+          </div>
+          <div style={styles.profileInfo}>
+            <h2>{profile.name}</h2>
+            <p>{profile.bio}</p>
+          </div>
         </div>
 
         <div style={styles.profileStats}>
@@ -162,11 +319,39 @@ const Profile = () => {
             </button>
           )}
         </div>
+
+        <div style={styles.profileActions}>
+          <button
+            style={styles.questButton}
+            onClick={() => navigate("/completed-quests")}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
+            Completed Quests
+          </button>
+          <button
+            style={styles.questButton}
+            onClick={() => navigate("/my-quests")}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
+            My Quests
+          </button>
+          <button
+            style={styles.constructorButton}
+            onClick={() => navigate("/constructor-of-quests")}
+            onMouseOver={handleMouseOver}
+            onMouseOut={handleMouseOut}
+          >
+            Constructor of Quests
+          </button>
+        </div>
       </div>
     </div>
   );
 };
 
+<<<<<<< HEAD
 // Стилі в JavaScript (inline styles)
 const styles = {
   profilePage: {
@@ -284,3 +469,6 @@ const styles = {
 };
 
 export default Profile;
+=======
+export default Profile;
+>>>>>>> origin/my-feature-yulia

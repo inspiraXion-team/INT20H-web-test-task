@@ -11,6 +11,8 @@ import Profile from './pages/MyProfile.jsx';
 import Quest from './pages/Quest/Quest.jsx';
 import QuestPreview from './pages/QuestPreview/QuestPreview.jsx';
 
+import MyQuests from './pages/MyQuests.jsx';
+import ConstructorOfQuests from './pages/ConstructorOfQuest.jsx';
 import './App.css';
 
 function App() {
