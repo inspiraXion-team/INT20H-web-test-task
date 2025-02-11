@@ -13,12 +13,9 @@ namespace Domain.Entities
         public string PosterURL { get; set; } = string.Empty;
         public int AuthorId { get; set; }
         public User Author { get; set; }
-        public int PlayerLimit { get; set; } = 0;
         [Required]
         public bool IsPublished { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public int GenreId { get; set; }
-        public Genre Genre { get; set; }
         public IEnumerable<QuestRating> Rating { get; set; }
         public IEnumerable<QuestProgress> QuestProgresses {  get; set; }
         public IEnumerable<QuestTask> QuestTasks { get; set; }

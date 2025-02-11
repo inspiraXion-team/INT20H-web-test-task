@@ -5,14 +5,15 @@ import Header from './components/Header';
 import ROUTES from './lib/routes';
 import Auth from './pages/Auth/Auth';
 import CompletedQuests from './pages/CompletedQuests.jsx';
+import ConstructorOfQuest from './pages/ConstructorOfQuest.jsx';
+import ConstructorOfQuests from './pages/ConstructorOfQuest.jsx';
 import HomePage from './pages/HomePage';
 import Logout from './pages/Logout.jsx';
 import Profile from './pages/MyProfile.jsx';
+import MyQuests from './pages/MyQuests.jsx';
 import Quest from './pages/Quest/Quest.jsx';
 import QuestPreview from './pages/QuestPreview/QuestPreview.jsx';
 
-import MyQuests from './pages/MyQuests.jsx';
-import ConstructorOfQuests from './pages/ConstructorOfQuest.jsx';
 import './App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path={ROUTES.LOGOUT} element={<Logout />} />
           <Route path={ROUTES.QUEST_PREVIEW} element={<QuestPreview />} />
           <Route path={ROUTES.QUEST} element={<Quest />} />
+          <Route path={ROUTES.CONSTRUCTOR_OF_QUEST} element={<ConstructorOfQuest />} />
         </Routes>
       </main>
       <Footer />
