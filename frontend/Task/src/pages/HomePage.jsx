@@ -1,7 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Autoplay, Navigation } from 'swiper/modules';
+import { Autoplay, Navigation } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
+
 
 // Стилі для автопрокрутки
 import news1 from '../assets/news1.png';
