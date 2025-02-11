@@ -1,0 +1,52 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+.logo-container img {
+  height: 50px;
+}
+
+.user-photo {
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  left: auto;
+}
+
+/* Стилі для Swiper */
+.swiper {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #fff;
+  /* Колір стрілок */
+}
+
+.swiper-pagination-bullet {
+  background: #fff;
+  /* Колір точок */
+}
+
+.swiper-pagination-bullet-active {
+  background: #007bff;
+  /* Колір активної точки */
+}

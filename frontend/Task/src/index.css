@@ -1,0 +1,182 @@
+/* Базові стилі */
+body {
+  background: url('/background.png') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Адаптація фону */
+@media (max-aspect-ratio: 16/9) {
+  body {
+    background-size: auto 100%; /* Підганяємо висоту фону */
+  }
+}
+
+@media (min-aspect-ratio: 16/9) {
+  body {
+    background-size: 100% auto; /* Підганяємо ширину фону */
+  }
+}
+
+/* Кнопки */
+.btn-info {
+  background-color: #00fff2;
+  border: none;
+  color: #000;
+}
+
+.btn-info:hover {
+  background-color: #00e6d9;
+  color: #000;
+}
+
+/* Картки */
+.card {
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img {
+  height: 150px;
+  object-fit: cover;
+}
+
+/* Хедер */
+.custom-header {
+  width: 100%;
+  background-color: rgba(215, 214, 239, 0.6); /* Напівпрозорий фон */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Логотип */
+.logo-container {
+  text-align: center;
+}
+
+.custom-logo {
+  max-width: 120px;
+  height: auto;
+}
+
+/* Навігація */
+.nav-center {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.user-photo {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.dropdown-menu {
+  min-width: 180px;
+  text-align: right;
+}
+
+.nav-link {
+  color: black !important;
+  transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+  color: gray !important;
+}
+
+/* Адаптація для малих екранів (до 768px) */
+@media (max-width: 768px) {
+  .custom-logo {
+    max-width: 100px; /* Зменшуємо логотип */
+  }
+
+  .nav-center {
+    flex-direction: column; /* Навігація вертикально */
+    gap: 10px;
+    align-items: center;
+  }
+
+  .user-photo {
+    width: 30px;
+    height: 30px; /* Зменшуємо фото користувача */
+  }
+
+  .card-img {
+    height: 100px; /* Зменшуємо висоту зображення картки */
+  }
+
+  .btn-info {
+    font-size: 14px; /* Зменшуємо розмір тексту кнопки */
+    padding: 5px 10px;
+  }
+}
+
+/* Адаптація для дуже малих екранів (до 576px) */
+@media (max-width: 576px) {
+  .custom-logo {
+    max-width: 80px; /* Ще менше логотип */
+  }
+
+  .nav-center {
+    gap: 5px; /* Менший проміжок між елементами */
+  }
+
+  .user-photo {
+    width: 25px;
+    height: 25px; /* Ще менше фото користувача */
+  }
+
+  .card-img {
+    height: 80px; /* Ще менше висота зображення картки */
+  }
+
+  .btn-info {
+    font-size: 12px; /* Ще менше розмір тексту кнопки */
+    padding: 4px 8px;
+  }
+
+  .dropdown-menu {
+    min-width: 140px; /* Зменшуємо ширину випадаючого меню */
+  }
+}
+
+/* Адаптація для великих екранів (від 1200px) */
+@media (min-width: 1200px) {
+  .custom-logo {
+    max-width: 150px; /* Збільшуємо логотип */
+  }
+
+  .nav-center {
+    gap: 30px; /* Збільшуємо проміжок між елементами */
+  }
+
+  .user-photo {
+    width: 50px;
+    height: 50px; /* Збільшуємо фото користувача */
+  }
+
+  .card-img {
+    height: 200px; /* Збільшуємо висоту зображення картки */
+  }
+
+  .btn-info {
+    font-size: 16px; /* Збільшуємо розмір тексту кнопки */
+    padding: 8px 16px;
+  }
+}
+
+.custom-bg-color {
+  background-color: #2E2C30;
+}
