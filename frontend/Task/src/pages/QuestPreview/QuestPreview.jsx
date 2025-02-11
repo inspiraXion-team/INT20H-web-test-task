@@ -34,8 +34,8 @@ const QuestPreview = () => {
       </div>
       
       <div className="quest-actions">
-        <button className="btn btn-primary btn-pass"><Link to={ROUTES.QUEST} className="text-black text-decoration-none">Пройти самостійно</Link></button>
-        <button className="btn btn-secondary btn-invite">Запросити друзів</button>
+        <button className="btn btn-primary btn-pass"><Link to={ROUTES.QUEST} className="text-black text-decoration-none">Go on a quest!</Link></button>
+        <button className="btn btn-secondary btn-invite">Other quests</button>
       </div>
     </div>
   );
