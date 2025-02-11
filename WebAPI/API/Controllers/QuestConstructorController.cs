@@ -31,5 +31,21 @@ namespace API.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("{questId}")]
+        public async Task<ActionResult<QuestEditingDTO>> GetQuest(int questId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+            try
+            {
+                var result = await _questConstructorService.GetQuestForEditing(userId, questId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

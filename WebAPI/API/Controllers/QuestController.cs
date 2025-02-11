@@ -1,32 +1,36 @@
-﻿using System.Security.Claims;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("ws/quest")]
+    [Route("api/quest")]
+    [ApiController]
     public class QuestController : ControllerBase
     {
-        private readonly IQuestSessionManager _questSessionManager;
+        private readonly IQuestService _questService;
 
-        public QuestController(IQuestSessionManager questSessionManager)
+        public QuestController(IQuestService questService)
         {
-            _questSessionManager = questSessionManager;
+            _questService = questService;
         }
 
-        [HttpGet]
-        public async Task Get()
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetQuest(int id)
         {
-            if (HttpContext.WebSockets.IsWebSocketRequest)
+            var quest = await _questService.GetQuest(id);
+            if (quest == null)
             {
-                var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-                var socket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                await _questSessionManager.HandleWebSocketAsync(socket, userId);
+                return NotFound(new { message = "Quest not found" });
             }
-            else
-            {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
-            }
+
+            return Ok(quest);
+        }
+
+        [HttpGet("all/published")]
+        public async Task<IActionResult> GetPublishedQuests()
+        {
+            var quests = await _questService.GetPublishedQuests();
+            return Ok(quests);
         }
     }
 }
