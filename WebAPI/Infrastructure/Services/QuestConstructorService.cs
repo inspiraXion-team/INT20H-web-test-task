@@ -114,5 +114,54 @@ namespace Infrastructure.Services
 
             return quest.Id;
         }
+
+        public async Task<QuestEditingDTO> GetQuestForEditing(int userId, int questId)
+        {
+            var quest = await _unitOfWork.Repository<Quest>()
+        .GetFirstOrDefaultAsync(q => q.Id == questId && q.AuthorId == userId,
+            "QuestTasks,QuestTasks.TaskOptions,QuestTasks.TaskWrite,QuestTasks.TaskImage,QuestTasks.MediaContents");
+
+            if (quest == null)
+            {
+                throw new KeyNotFoundException("Quest not found or you don't have access to the quest");
+            }
+
+            var questDto = new QuestEditingDTO
+            {
+                Title = quest.Title,
+                Description = quest.Description,
+                TimeLimit = quest.TimeLimit,
+                PosterURL = quest.PosterURL,
+                IsPublished = quest.IsPublished,
+                Tasks = quest.QuestTasks
+                    .OrderBy(t => t.Order)
+                    .Select(task => new QuestTaskEditingDTO
+                    {
+                        Title = task.Title,
+                        QuestionType = task.QuestionType,
+                        Order = task.Order,
+                        TaskOptions = task.TaskOptions?.Select(opt => new TaskOptionEditingDTO
+                        {
+                            Text = opt.OptionText,
+                            IsCorrect = opt.IsCorrect
+                        }) ?? Enumerable.Empty<TaskOptionEditingDTO>(),
+                        TaskWrite = task.TaskWrite != null ? new TaskWriteEditingDTO
+                        {
+                            Answer = task.TaskWrite.Answer
+                        } : null,
+                        TaskImage = task.TaskImage != null ? new TaskImageEditingDTO
+                        {
+                            AnswerX1 = task.TaskImage.AnswerX1,
+                            AnswerY1 = task.TaskImage.AnswerY1,
+                            AnswerX2 = task.TaskImage.AnswerX2,
+                            AnswerY2 = task.TaskImage.AnswerY2,
+                            ImageURL = task.TaskImage.ImageURL
+                        } : null,
+                        MediaContents = task.MediaContents.Select(mc => mc.URL).ToList() ?? new List<string>()
+                    }).ToList()
+            };
+
+            return questDto;
+        }
     }
 }
