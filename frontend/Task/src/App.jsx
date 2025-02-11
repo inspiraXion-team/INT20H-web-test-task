@@ -29,6 +29,7 @@ function App() {
           <Route path={ROUTES.LOGOUT} element={<Logout />} />
           <Route path={ROUTES.QUEST_PREVIEW} element={<QuestPreview />} />
           <Route path={ROUTES.QUEST} element={<Quest />} />
+            <Route path={ROUTES.MY_QUESTS} element={<MyQuests />} />
           <Route path={ROUTES.CONSTRUCTOR_OF_QUEST} element={<ConstructorOfQuest />} />
         </Routes>
       </main>

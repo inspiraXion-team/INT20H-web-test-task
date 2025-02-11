@@ -1,82 +1,59 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { isCompletedQuestsRoute, getCompletedQuestsRoute } from '../lib/routes';
 
 const CompletedQuests = () => {
-  const location = useLocation(); // Отримуємо інформацію про поточний URL
+  const location = useLocation();
 
   useEffect(() => {
-    // Перевіряємо, чи поточний роут є роутом завершених квестів
     if (isCompletedQuestsRoute(location.pathname)) {
-      console.log('This is the completed quests route');
       console.log('Completed quests route:', getCompletedQuestsRoute());
     }
   }, [location]);
 
-  // Приклад даних про завершені квести
   const completedQuests = [
     {
       id: 1,
-      title: 'First Quest',
+      title: 'Cyber Explorer',
       description: 'Complete your first quest and earn the Explorer badge.',
-      completedOn: '2023-10-01',
-      image: 'https://via.placeholder.com/300x200.png?text=Quest+1', // Зображення квесту
-      progress: 100, // Прогрес проходження (100% для завершених квестів)
+      completedOn: '2024-02-11',
+      image: 'https://via.placeholder.com/300x200.png?text=Quest+1',
+      progress: 100,
     },
     {
       id: 2,
-      title: 'Master Creator',
-      description: 'Create 5 quests and earn the Master Creator badge.',
-      completedOn: '2023-10-05',
+      title: 'Neon Hacker',
+      description: 'Complete 5 hacking challenges and earn the Master Hacker badge.',
+      completedOn: '2024-02-05',
       image: 'https://via.placeholder.com/300x200.png?text=Quest+2',
       progress: 100,
     },
     {
       id: 3,
-      title: 'Adventure Seeker',
-      description: 'Complete 10 quests and earn the Adventure Seeker badge.',
-      completedOn: '2023-10-10',
+      title: 'Data Runner',
+      description: 'Complete 10 data retrieval missions.',
+      completedOn: '2024-01-30',
       image: 'https://via.placeholder.com/300x200.png?text=Quest+3',
-      progress: 100,
-    },
-    {
-      id: 4,
-      title: 'Treasure Hunter',
-      description: 'Find hidden treasures in 3 different locations.',
-      completedOn: '2023-10-15',
-      image: 'https://via.placeholder.com/300x200.png?text=Quest+4',
       progress: 100,
     },
   ];
 
   return (
-    <div style={styles.completedQuestsPage}>
-      <div style={styles.completedQuestsCard}>
-        <h2>Completed Quests</h2>
-        <p>Here are the quests you've completed so far:</p>
+    <div style={styles.page}>
+      <div style={styles.card}>
+        <h2 style={styles.title}>💾 Completed Quests</h2>
+        <p style={styles.subtitle}>Your legendary achievements in the cyber world:</p>
 
-        {/* Горизонтальний скролл для карток квестів */}
         <div style={styles.questsContainer}>
           <div style={styles.questsList}>
             {completedQuests.map((quest) => (
               <div key={quest.id} style={styles.questItem}>
-                <img
-                  src={quest.image}
-                  alt={quest.title}
-                  style={styles.questImage}
-                />
+                <img src={quest.image} alt={quest.title} style={styles.questImage} />
                 <h3 style={styles.questTitle}>{quest.title}</h3>
                 <p style={styles.questDescription}>{quest.description}</p>
-                <p style={styles.questDate}>
-                  <strong>Completed on:</strong> {quest.completedOn}
-                </p>
+                <p style={styles.questDate}><strong>Completed on:</strong> {quest.completedOn}</p>
                 <div style={styles.progressBarContainer}>
-                  <div
-                    style={{
-                      ...styles.progressBar,
-                      width: `${quest.progress}%`,
-                    }}
-                  ></div>
+                  <div style={{ ...styles.progressBar, width: `${quest.progress}%` }}></div>
                 </div>
                 <p style={styles.progressText}>{quest.progress}% completed</p>
               </div>
@@ -88,42 +65,60 @@ const CompletedQuests = () => {
   );
 };
 
-// Стилі для сторінки CompletedQuests
+// **Кіберпанкові стилі**
 const styles = {
-  completedQuestsPage: {
+  page: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     minHeight: '100vh',
-    backgroundColor: '#f5f5f5',
+background: 'linear-gradient(135deg, #0f0c29,rgb(9, 8, 24),rgb(19, 79, 83))',
     padding: '20px',
   },
-  completedQuestsCard: {
-    background: 'white',
-    borderRadius: '10px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  card: {
+    background: 'rgba(0, 15, 40, 0.9)',
+    borderRadius: '12px',
     padding: '20px',
     width: '100%',
     maxWidth: '1200px',
     textAlign: 'center',
+    border: '2px solid #00e5ff',
+    boxShadow: '0 0 35px rgba(0, 229, 255, 0.8)',
+    animation: 'neonFlicker 1.5s infinite alternate',
+  },
+  title: {
+    color: '#00e5ff',
+    fontSize: '28px',
+    textShadow: '0 0 10px #00e5ff',
+  },
+  subtitle: {
+    color: '#00c8ff',
+    fontSize: '16px',
+    textShadow: '0 0 8px rgba(0, 229, 255, 0.7)',
   },
   questsContainer: {
-    overflowX: 'auto', // Горизонтальний скролл
+    overflowX: 'auto',
     marginTop: '20px',
+    paddingBottom: '10px',
   },
   questsList: {
     display: 'flex',
-    gap: '20px', // Відстань між картками
-    paddingBottom: '20px', // Для кращого відображення скролу
+    gap: '20px',
+    paddingBottom: '20px',
   },
   questItem: {
-    background: '#f9f9f9',
+    background: 'rgba(2, 12, 38, 0.8)',
     padding: '15px',
     borderRadius: '10px',
-    border: '1px solid #ddd',
-    minWidth: '280px', // Мінімальна ширина картки
+    border: '2px solid #00e5ff',
+    minWidth: '280px',
     textAlign: 'left',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    boxShadow: '0 0 15px rgba(0, 229, 255, 0.6)',
+    transition: 'transform 0.3s, box-shadow 0.3s',
+  },
+  questItemHover: {
+    transform: 'scale(1.05)',
+    boxShadow: '0 0 25px rgba(0, 229, 255, 1)',
   },
   questImage: {
     width: '100%',
@@ -131,37 +126,39 @@ const styles = {
     marginBottom: '10px',
   },
   questTitle: {
-    margin: '0 0 10px 0',
-    color: '#333',
+    color: '#00e5ff',
     fontSize: '18px',
+    textShadow: '0 0 8px #00e5ff',
   },
   questDescription: {
-    margin: '0 0 10px 0',
-    color: '#555',
+    color: '#00c8ff',
     fontSize: '14px',
   },
   questDate: {
-    margin: '0 0 10px 0',
-    color: '#777',
+    color: '#00aaff',
     fontSize: '12px',
   },
   progressBarContainer: {
-    background: '#e0e0e0',
+    background: 'rgba(255, 255, 255, 0.1)',
     borderRadius: '5px',
     height: '10px',
     overflow: 'hidden',
     marginBottom: '5px',
   },
   progressBar: {
-    background: '#007bff',
+    background: 'linear-gradient(90deg, #00e5ff, #007bff)',
     height: '100%',
     borderRadius: '5px',
+    boxShadow: '0 0 10px rgba(0, 229, 255, 0.7)',
   },
   progressText: {
-    margin: '0',
-    color: '#007bff',
+    color: '#00e5ff',
     fontSize: '12px',
     textAlign: 'right',
+  },
+  '@keyframes neonFlicker': {
+    '0%': { boxShadow: '0 0 10px rgba(0, 229, 255, 0.5)' },
+    '100%': { boxShadow: '0 0 20px rgba(0, 229, 255, 1)' },
   },
 };
 

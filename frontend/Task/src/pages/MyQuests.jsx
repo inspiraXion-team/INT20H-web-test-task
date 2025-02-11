@@ -1,50 +1,49 @@
-// MyQuests.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "../lib/routes";
 
 const MyQuests = () => {
   const navigate = useNavigate();
+  const [hovered, setHovered] = useState(null);
 
-  // Приклад даних про квести
-  const [quests, setQuests] = useState([
-    { id: 1, name: 'Квест 1', level: 'Рівень 1', status: 'Активний' },
-    { id: 2, name: 'Квест 2', level: 'Рівень 2', status: 'Завершений' },
-    { id: 3, name: 'Квест 3', level: 'Рівень 3', status: 'В очікуванні' },
-  ]);
-
-  // Функція для переходу на сторінку деталей квесту
-  const handleViewDetails = (questId) => {
-    navigate(`/quest-details/${questId}`);
-  };
-
-  // Функція для переходу на сторінку конструктора квестів
-  const handleGoToConstructor = () => {
-    navigate('/constructor-of-quests');
-  };
+  const quests = [
+    { id: 1, name: "Cyber Explorer", level: "Рівень 1", status: "Активний", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+1" },
+    { id: 2, name: "Neon Hacker", level: "Рівень 2", status: "Завершений", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+2" },
+    { id: 3, name: "Data Runner", level: "Рівень 3", status: "В очікуванні", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+3" },
+    { id: 4, name: "Shadow Seeker", level: "Рівень 4", status: "Активний", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+4" },
+  ];
 
   return (
     <div style={styles.container}>
-
-      {/* Кнопка для переходу на сторінку конструктора квестів */}
-      <button
-        style={styles.constructorButton}
-        onClick={handleGoToConstructor}
+      <h1 style={styles.neonText}>📜 My Own Quests</h1>
+      <button 
+        style={styles.neonButton} 
+        onClick={() => navigate(ROUTES.CONSTRUCTOR_OF_QUEST)}
       >
-        Constructor Of Quests
+        ⚙️ Constructor of Quests
       </button>
 
-      {/* Список квестів */}
-      <div style={styles.questsList}>
-        {quests.map((quest) => (
-          <div key={quest.id} style={styles.questCard}>
-            <h3>{quest.name}</h3>
-            <p>Рівень: {quest.level}</p>
-            <p>Статус: {quest.status}</p>
-            <button
-              style={styles.detailsButton}
-              onClick={() => handleViewDetails(quest.id)}
+      {/* Горизонтальний список без автоскролу */}
+      <div style={styles.questsContainer}>
+        {quests.map((quest, index) => (
+          <div 
+            key={quest.id} 
+            style={{
+              ...styles.questCard, 
+              ...(hovered === index ? styles.hoveredCard : {}),
+            }}
+            onMouseEnter={() => setHovered(index)}
+            onMouseLeave={() => setHovered(null)}
+          >
+            <img src={quest.image} alt={quest.name} style={styles.questImage} />
+            <h3 style={styles.questTitle}>{quest.name}</h3>
+            <p style={styles.questDetails}>Рівень: {quest.level}</p>
+            <p style={styles.questDetails}>Статус: {quest.status}</p>
+            <button 
+              style={styles.neonButton} 
+              onClick={() => navigate(`${ROUTES.QUEST_DETAILS}/${quest.id}`)}
             >
-              Деталі
+              🔍 Деталі
             </button>
           </div>
         ))}
@@ -53,46 +52,70 @@ const MyQuests = () => {
   );
 };
 
-// Стилі
+// **Стилі**
 const styles = {
   container: {
-    padding: '20px',
-    maxWidth: '800px',
-    margin: '0 auto',
-    textAlign: 'center',
+    textAlign: "center",
+    color: "white",
+    background: "radial-gradient(circle, #001f3f, #000814)",
+    padding: "20px",
+    minHeight: "100vh",
   },
-  constructorButton: {
-    backgroundColor: '#2196F3',
-    color: 'white',
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '16px',
-    marginBottom: '20px',
+  neonText: {
+    fontSize: "2rem",
+    fontWeight: "bold",
+    color: "#00e5ff",
+    textShadow: "0 0 15px #00e5ff",
+    marginBottom: "20px",
   },
-  questsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '15px',
+  neonButton: {
+    padding: "10px 20px",
+    border: "none",
+    borderRadius: "5px",
+    backgroundColor: "transparent",
+    color: "#00e5ff",
+    cursor: "pointer",
+    fontSize: "16px",
+    transition: "0.3s ease-in-out",
+    textShadow: "0 0 8px #00e5ff",
+    margin: "10px",
+    boxShadow: "0 0 10px rgba(0, 229, 255, 0.5)",
+  },
+  questsContainer: {
+    display: "flex",
+    gap: "20px",
+    overflowX: "auto",
+    padding: "20px",
+    scrollbarWidth: "thin",
+    scrollbarColor: "#00e5ff #000814",
   },
   questCard: {
-    backgroundColor: '#f9f9f9',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    padding: '15px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    transition: 'transform 0.2s, box-shadow 0.2s',
+    background: "rgba(0, 15, 40, 0.8)",
+    padding: "15px",
+    borderRadius: "10px",
+    border: "2px solid #00e5ff",
+    minWidth: "280px",
+    textAlign: "center",
+    boxShadow: "0 0 15px rgba(0, 229, 255, 0.6)",
+    transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
   },
-  detailsButton: {
-    backgroundColor: '#4CAF50',
-    color: 'white',
-    padding: '10px 20px',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    marginTop: '10px',
+  questImage: {
+    width: "100%",
+    borderRadius: "10px",
+    marginBottom: "10px",
+  },
+  questTitle: {
+    color: "#00e5ff",
+    fontSize: "18px",
+    textShadow: "0 0 10px #00e5ff",
+  },
+  questDetails: {
+    color: "#00c8ff",
+    fontSize: "14px",
+  },
+  hoveredCard: {
+    transform: "scale(1.05)",
+    boxShadow: "0 0 25px rgba(0, 229, 255, 1)",
   },
 };
 

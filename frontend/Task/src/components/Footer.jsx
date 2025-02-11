@@ -1,50 +1,124 @@
 import { Link } from 'react-router-dom';
-
 import ROUTES from '../lib/routes';
 
 function Footer() {
-    return (
-      <footer className="bg-dark py-5">
-        <div className="container">
-          <div className="row justify-content-center align-items-center">
-           
-            <div className="col-12 col-md-3 mb-4 text-center text-md-start">
-              <h5 className="text-white">Quespiration</h5>
-              <ul className="list-unstyled">
-                <li><a href="#" className="text-white text-decoration-none"><Link to={ROUTES.PROFILE} className="text-white text-decoration-none">My profile</Link></a></li>
-                <li><a href="#" className="text-white text-decoration-none"><Link to={ROUTES.CONSTRUCTOR_OF_QUEST} className="text-white text-decoration-none">Constructor of quests</Link></a></li>
-                <li><a href="#" className="text-white text-decoration-none">Language</a></li>
-              </ul>
-            </div>
-  
-        
-            <div className="col-12 col-md-6 mb-4 text-center">
-              <h5 className="text-white">Our quests</h5>
-              <ul className="list-unstyled">
-                <li><a href="#" className="text-white text-decoration-none">Education</a></li>
-                <li><a href="#" className="text-white text-decoration-none">Fun</a></li>
-                <li><a href="#" className="text-white text-decoration-none">Team building</a></li>
-              </ul>
-            </div>
-  
-         
-            <div className="col-12 col-md-3 mb-4 text-center text-md-end">
-              <h5 className="text-white">Contact us</h5>
-              <ul className="list-unstyled text-white">
-                <li>+380972854114</li>
-                <li>info@gmail.com</li>
-              </ul>
-            </div>
+  return (
+    <footer style={styles.footer}>
+      <div style={styles.container}>
+        <div style={styles.grid}>
+          {/* 🔹 Логотип і навігація */}
+          <div style={styles.column}>
+            <h5 style={styles.glowText}>⚡ Quespiration</h5>
+            <ul style={styles.list}>
+              <li><Link to={ROUTES.PROFILE} style={styles.neonLink}>🚀 My Profile</Link></li>
+              <li><Link to={ROUTES.CONSTRUCTOR_OF_QUEST} style={styles.neonLink}>🎮 Quest Constructor</Link></li>
+              <li><a href="#" style={styles.neonLink}>🌍 Language</a></li>
+            </ul>
           </div>
- 
-          <div className="text-center mt-4 text-white">
-            <p className="mb-0">Copyright (C) Quespiration Corporation</p>
-            <p className="mb-0">2025 | All rights reserved</p>
+
+          {/* 📡 Контакти */}
+          <div style={styles.column}>
+            <h5 style={styles.glowText}>📡 Contact Us</h5>
+            <ul style={styles.list}>
+              <li style={styles.neonText}>📞 +380972854114</li>
+              <li style={styles.neonText}>📧 info@gmail.com</li>
+            </ul>
           </div>
         </div>
-      </footer>
-    );
+
+        {/* 🔹 Авторські права */}
+        <div style={styles.copyright}>
+          <p>© 2025 Quespiration Corporation</p>
+          <p>🌐 All Rights Reserved</p>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+// 🎨 **Футуристичні кіберпанкові стилі**
+const styles = {
+  footer: {
+    background: 'radial-gradient(circle, #001f3f, #000a1f, #000519)',
+    padding: '50px 0',
+    textAlign: 'center',
+    borderTop: '3px solid #00e5ff',
+    boxShadow: '0 -4px 25px rgba(0, 229, 255, 0.8)',
+    position: 'relative',
+    overflow: 'hidden',
+    animation: 'pulseFooter 5s infinite alternate',
+  },
+  container: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '0 20px',
+  },
+  grid: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+  },
+  column: {
+    marginBottom: '20px',
+  },
+  glowText: {
+    color: '#00e5ff',
+    fontSize: '22px',
+    fontWeight: 'bold',
+    textShadow: '0 0 15pxrgb(241, 241, 241), 0 0 25px #0077ff',
+    fontFamily: "'Orbitron', sans-serif",
+    letterSpacing: '2px',
+  },
+  list: {
+    listStyle: 'none',
+    padding: 0,
+  },
+  neonLink: {
+    color: '#00e5ff',
+    fontSize: '18px',
+    textDecoration: 'none',
+    display: 'block',
+    marginTop: '8px',
+    textShadow: '0 0 15px rgba(0, 229, 255, 0.8)',
+    fontFamily: "'Orbitron', sans-serif",
+    transition: '0.3s ease-in-out',
+  },
+  neonLinkHover: {
+    textShadow: '0 0 25px rgba(0, 229, 255, 1)',
+  },
+  neonText: {
+    color: '#00ffcc',
+    fontSize: '18px',
+    textShadow: '0 0 10px rgb(255, 255, 255)',
+    fontFamily: "'Orbitron', sans-serif",
+  },
+  copyright: {
+    marginTop: '30px',
+    color: '#ffffff',
+    fontSize: '14px',
+    textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+    fontFamily: "'Orbitron', sans-serif",
+  },
+};
+
+// 🎭 **Додаткові CSS-анімації**
+const stylesWithAnimations = `
+  @keyframes pulseFooter {
+    0% { box-shadow: 0 -4px 25px rgba(0, 229, 255, 0.8); }
+    100% { box-shadow: 0 -4px 35px rgba(0, 229, 255, 1); }
   }
-  
-  export default Footer;
-  
+  @keyframes glowNeon {
+    0% { text-shadow: 0 0 10px #00e5ff, 0 0 20px #0077ff; }
+    50% { text-shadow: 0 0 15px #00e5ff, 0 0 30px #0077ff; }
+    100% { text-shadow: 0 0 10px #00e5ff, 0 0 20px #0077ff; }
+  }
+`;
+
+// 🛠 **Додаємо CSS-анімації в документ**
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = stylesWithAnimations;
+document.head.appendChild(styleSheet);
+
+export default Footer;

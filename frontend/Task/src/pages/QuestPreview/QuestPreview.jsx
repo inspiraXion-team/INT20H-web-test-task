@@ -1,17 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import ROUTES from "../../lib/routes";
-
 import './QuestPreview.css';
-
-// We'll create this CSS file for styling
 
 const QuestPreview = () => {
   return (
     <div className="quest-preview-container">
       <div className="quest-header">
-        <h1>Назва квесту</h1>
+        <h1>Name Quest</h1>
       </div>
       
       <div className="quest-content">
@@ -34,8 +30,9 @@ const QuestPreview = () => {
       </div>
       
       <div className="quest-actions">
-        <button className="btn btn-primary btn-pass"><Link to={ROUTES.QUEST} className="text-black text-decoration-none">Пройти самостійно</Link></button>
-        <button className="btn btn-secondary btn-invite">Запросити друзів</button>
+        <button className="btn btn-pass">
+          <Link to={ROUTES.QUEST} className="text-black text-decoration-none">Pass the Quest</Link>
+        </button>
       </div>
     </div>
   );
