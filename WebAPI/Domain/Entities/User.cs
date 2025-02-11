@@ -17,8 +17,6 @@ namespace Domain.Entities
         public UserStatus Status { get; set; } = UserStatus.User;
         public RefreshToken RefreshToken { get; set; }
         public IEnumerable<QuestRating> QuestRatings { get; set; }
-        public IEnumerable<ChatParticipant> ChatParticipants { get; set; }
-        public IEnumerable<ChatMessage> ChatMessages { get; set; }
         public IEnumerable<QuestProgress> QuestProgresses { get; set; }
         public IEnumerable<Reward> Rewards { get; set; }
         public AuthorRating Rating { get; set; }
