@@ -1,3 +1,7 @@
+import { Link } from 'react-router-dom';
+
+import ROUTES from '../lib/routes';
+
 function QuestCard({ title, image }) {
     return (
       <div className="card h-100 rounded-4 bg-light">
@@ -8,7 +12,7 @@ function QuestCard({ title, image }) {
             <div className="text-warning">★★★★★</div>
             <div className="text-warning">★★★★★</div>
           </div>
-          <button className="btn btn-primary w-100 rounded-pill">Start</button>
+          <Link to={ROUTES.QUEST_PREVIEW}><button className="btn btn-primary w-100 rounded-pill">Start</button></Link>
         </div>
       </div>
     )

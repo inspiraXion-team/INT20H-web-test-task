@@ -1,4 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import ROUTES from "../../lib/routes";
 
 import './QuestPreview.css';
 
@@ -31,7 +34,7 @@ const QuestPreview = () => {
       </div>
       
       <div className="quest-actions">
-        <button className="btn btn-primary btn-pass">Пройти самостійно</button>
+        <button className="btn btn-primary btn-pass"><Link to={ROUTES.QUEST} className="text-black text-decoration-none">Пройти самостійно</Link></button>
         <button className="btn btn-secondary btn-invite">Запросити друзів</button>
       </div>
     </div>

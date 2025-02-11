@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { isProfileRoute, getProfileRoute } from '../lib/routes';
-import { useNavigate } from "react-router-dom"; // Додано для навігації
+import { useNavigate } from "react-router-dom";
+
+import { getProfileRoute, isProfileRoute } from '../lib/routes';
+
+// Додано для навігації
 
 const Profile = () => {
   const location = useLocation(); // Отримуємо інформацію про поточний URL
@@ -331,7 +334,7 @@ const Profile = () => {
           </button>
           <button
             style={styles.constructorButton}
-            onClick={() => navigate("/constructor-of-quests")}
+            onClick={() => navigate("/constructor-of-quest")}
             onMouseOver={handleMouseOver}
             onMouseOut={handleMouseOut}
           >

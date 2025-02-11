@@ -1,3 +1,7 @@
+import { Link } from 'react-router-dom';
+
+import ROUTES from '../lib/routes';
+
 function Footer() {
     return (
       <footer className="bg-dark py-5">
@@ -7,8 +11,8 @@ function Footer() {
             <div className="col-12 col-md-3 mb-4 text-center text-md-start">
               <h5 className="text-white">Quespiration</h5>
               <ul className="list-unstyled">
-                <li><a href="#" className="text-white text-decoration-none">My profile</a></li>
-                <li><a href="#" className="text-white text-decoration-none">Constructor of quests</a></li>
+                <li><a href="#" className="text-white text-decoration-none"><Link to={ROUTES.PROFILE} className="text-white text-decoration-none">My profile</Link></a></li>
+                <li><a href="#" className="text-white text-decoration-none"><Link to={ROUTES.CONSTRUCTOR_OF_QUEST} className="text-white text-decoration-none">Constructor of quests</Link></a></li>
                 <li><a href="#" className="text-white text-decoration-none">Language</a></li>
               </ul>
             </div>

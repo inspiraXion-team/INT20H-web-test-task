@@ -1,23 +1,32 @@
 import { useLocation } from 'react-router-dom';
-import QuestCard from '../components/QuestCard.jsx';
-import { isHomeRoute } from '../lib/routes';
+import { Link } from 'react-router-dom';
+import { Autoplay, Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules'; // Імпорт модулів Swiper
-import 'swiper/css'; // Основні стилі Swiper
-import 'swiper/css/navigation'; // Стилі для кнопок навігації
-import 'swiper/css/autoplay'; // Стилі для автопрокрутки
+
+// Стилі для автопрокрутки
 import news1 from '../assets/news1.png';
 import news2 from '../assets/news2.png';
 import news3 from '../assets/news3.png';
 import news4 from '../assets/news4.png';
 import news5 from '../assets/news5.png';
-import quest1 from '../assets/quest-1.jpg'; // Ensure you have these images
+import quest1 from '../assets/quest-1.jpg';
+// Ensure you have these images
 import quest2 from '../assets/quest-2.jpg';
 import quest3 from '../assets/quest-3.jpg';
 import quest4 from '../assets/quest-4.jpg';
 import quest5 from '../assets/quest-5.jpg';
 import quest6 from '../assets/quest-6.jpg';
 import quest7 from '../assets/quest-7.jpg';
+import QuestCard from '../components/QuestCard.jsx';
+import ROUTES from '../lib/routes';
+import { isHomeRoute } from '../lib/routes';
+
+// Імпорт модулів Swiper
+import 'swiper/css';
+// Стилі для кнопок навігації
+import 'swiper/css/autoplay';
+// Основні стилі Swiper
+import 'swiper/css/navigation';
 
 function HomePage() {
     const location = useLocation();
@@ -49,7 +58,7 @@ function HomePage() {
                         <p style={styles.heroText}>
                             With Quespiration, you can create quests for education, teambuilding, and for fun!
                         </p>
-                        <button style={styles.createQuestButton}>Create a Quest</button>
+                        <Link to={ROUTES.CONSTRUCTOR_OF_QUEST}><button style={styles.createQuestButton}>Create a Quest</button></Link>
                     </div>
                 </section>
 
