@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 
 import Footer from './components/Footer';
 import Header from './components/Header';
+import { ProtectedRoute } from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 import ROUTES from './lib/routes';
 import Auth from './pages/Auth/Auth';
 import CompletedQuests from './pages/CompletedQuests.jsx';
@@ -62,25 +64,66 @@ const questData2 = {
         },
     ],
 };
+
 const App = () => {
-    return (
-        <div className="d-flex flex-column min-vh-100">
-            <Header />
-            <main className="flex-grow-1">
-                <Routes>
-                    <Route exact path={ROUTES.HOME} element={<HomePage />} />
-                    <Route path={ROUTES.AUTH} element={<Auth />} />
-                    <Route path={ROUTES.PROFILE} element={<Profile />} />
-                    <Route path={ROUTES.COMPLETED_QUESTS} element={<CompletedQuests />} />
-                    <Route path={ROUTES.LOGOUT} element={<Logout />} />
-                    <Route path={ROUTES.QUEST_PREVIEW} element={<QuestPreview />} />
-                    <Route path={ROUTES.QUEST} element={<Quest questData={questData2} questAuthor={questAuthor2} />} />
-                    <Route path={ROUTES.CONSTRUCTOR_OF_QUEST} element={<ConstructorOfQuest />} />
-                </Routes>
-            </main>
-            <Footer />
-        </div>
-    );
+  return (
+    <AuthProvider>
+      <div className="d-flex flex-column min-vh-100">
+        <Header />
+        <main className="flex-grow-1">
+          <Routes>
+            {/* Public routes */}
+            <Route exact path={ROUTES.HOME} element={<HomePage />} />
+            <Route path={ROUTES.AUTH} element={<Auth />} />
+            <Route path={ROUTES.QUEST_PREVIEW} element={<QuestPreview />} />
+
+            {/* Protected routes */}
+            <Route 
+              path={ROUTES.PROFILE} 
+              element={
+                <ProtectedRoute>
+                  <Profile />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path={ROUTES.COMPLETED_QUESTS} 
+              element={
+                <ProtectedRoute>
+                  <CompletedQuests />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path={ROUTES.LOGOUT} 
+              element={
+                <ProtectedRoute>
+                  <Logout />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path={ROUTES.QUEST} 
+              element={
+                <ProtectedRoute>
+                  <Quest questData={questData2} questAuthor={questAuthor2} />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path={ROUTES.CONSTRUCTOR_OF_QUEST} 
+              element={
+                <ProtectedRoute>
+                  <ConstructorOfQuest />
+                </ProtectedRoute>
+              } 
+            />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </AuthProvider>
+  );
 };
 
 export default App;
