@@ -165,13 +165,14 @@ const styles = {
     textShadow: "0 0 10px cyan",
   },
   neonDetail: {
-    color: "#0ff",
+    color: "white",
     textShadow: "0 0 5px rgba(0, 255, 255, 0.7)",
   },
   profileInfo: {
     textAlign: "left",
     padding: "10px",
     borderRadius: "5px",
+    color: "white",
     backgroundColor: "rgba(0, 255, 255, 0.1)",
     marginBottom: "15px",
   },
