@@ -1,10 +1,13 @@
 import axiosInstance from './axios-instance';
 
 export const ProfileService = {
-  async updateProfile(username, avatarFile) {
+  async updateProfile(username, email, avatarFile) {
     const formData = new FormData();
     if (username) {
       formData.append('Username', username);
+    }
+    if (email) {
+      formData.append('Email', email);
     }
     if (avatarFile) {
       formData.append('AvatarFile', avatarFile);

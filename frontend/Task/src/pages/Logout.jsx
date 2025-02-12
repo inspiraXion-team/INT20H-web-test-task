@@ -1,26 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getLogoutRoute, isLogoutRoute } from '../lib/routes';
 import ROUTES from '../lib/routes';
 
 const Logout = () => {
-  const { logout } = useAuth();
+  const { logout, isAuthenticated } = useAuth(); // Додано isAuthenticated
   const navigate = useNavigate();
-  const location = useLocation(); // Отримуємо інформацію про поточний URL
   const [isConfirming, setIsConfirming] = useState(false);
 
-  useEffect(() => {
-    if (isLogoutRoute(location.pathname)) {
-      console.log('This is the logout route');
-      console.log('Logout route:', getLogoutRoute());
-    }
-    logout();
-    navigate(ROUTES.HOME);
-  }, [location]);
-
   const handleLogout = () => {
+    logout(); // Викликаємо функцію виходу
+    navigate(ROUTES.HOME); // Перенаправляємо на головну сторінку
     console.log('User logged out');
     alert('You have been logged out.');
   };

@@ -31,7 +31,7 @@ const QuestPreview = () => {
       
       <div className="quest-actions">
         <button className="btn btn-primary btn-pass"><Link to={ROUTES.QUEST} className="text-black text-decoration-none">Go on a quest!</Link></button>
-        <button className="btn btn-secondary btn-invite">Other quests</button>
+        <button className="btn btn-secondary btn-invite"><Link to={ROUTES.HOME} className="text-dark text-decoration-none">Other quests</Link></button>
       </div>
     </div>
   );

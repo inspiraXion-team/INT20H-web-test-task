@@ -118,6 +118,14 @@ const App = () => {
                 </ProtectedRoute>
               } 
             />
+            <Route 
+              path={ROUTES.MY_QUESTS} 
+              element={
+                <ProtectedRoute>
+                  <MyQuests />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </main>
         <Footer />

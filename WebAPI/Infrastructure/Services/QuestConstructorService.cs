@@ -44,6 +44,7 @@ namespace Infrastructure.Services
 
             foreach (var taskDto in questDTO.Tasks)
             {
+                Console.WriteLine(taskDto.Title);
                 var questTask = new QuestTask
                 {
                     Title = taskDto.Title,
@@ -66,7 +67,7 @@ namespace Infrastructure.Services
 
                     await taskOptionRepository.InsertRangeAsync(options);
                 }
-                else if(taskDto.TaskWrite != null)
+                else if (taskDto.TaskWrite != null)
                 {
                     var taskWrite = new TaskWrite
                     {
@@ -76,7 +77,7 @@ namespace Infrastructure.Services
 
                     await taskWriteRepository.InsertAsync(taskWrite);
                 }
-                else if(taskDto.TaskImage != null)
+                else if (taskDto.TaskImage != null)
                 {
                     var imageUrl = await _blobStorageService.UploadFileAsync(taskDto.TaskImage.Image);
 

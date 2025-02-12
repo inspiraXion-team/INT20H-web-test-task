@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../lib/routes";
-import { ProfileService } from "../services/api/profile.service"; // Імпортуйте ProfileService
+import { ProfileService } from "../services/api/profile.service";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
+    id: 0,
     username: "",
     email: "",
-    avatar: 'src/assets/avatar-placeholder.png',
+    avatarURL: "src/assets/avatar-placeholder.png", // За замовчуванням
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState("");
-  const [avatarFile, setAvatarFile] = useState(null);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    avatarFile: null,
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -22,12 +26,12 @@ const Profile = () => {
       setLoading(true);
       try {
         const data = await ProfileService.getProfile();
-        setProfile({
+        setProfile(data);
+        setFormData({
           username: data.username,
           email: data.email,
-          avatar: data.avatarUrl || profile.avatar, // Використовуйте URL аватарки з API
+          avatarFile: null,
         });
-        setNewName(data.username);
       } catch (error) {
         setError("Failed to fetch profile");
         console.error("Failed to fetch profile:", error);
@@ -47,25 +51,38 @@ const Profile = () => {
       reader.onloadend = () => {
         setProfile((prev) => ({
           ...prev,
-          avatar: reader.result,
+          avatarURL: reader.result, // Оновлюємо попередній перегляд аватарки
         }));
       };
       reader.readAsDataURL(file);
-      setAvatarFile(file);
+      setFormData((prev) => ({
+        ...prev,
+        avatarFile: file,
+      }));
     }
+  };
+
+  // Оновлення форми
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   // Оновлення профілю
   const handleSave = async () => {
     setLoading(true);
     try {
-      const updatedProfile = await ProfileService.updateProfile(newName, avatarFile);
-      setProfile({
-        username: updatedProfile.username,
-        email: updatedProfile.email,
-        avatar: updatedProfile.avatarUrl || profile.avatar,
-      });
+      const updatedProfile = await ProfileService.updateProfile(
+        formData.username || profile.username, // Якщо поле не змінено, беремо старе значення
+        formData.email || profile.email, // Якщо поле не змінено, беремо старе значення
+        formData.avatarFile // Файл аватарки (може бути null)
+      );
+      setProfile(updatedProfile); // Оновлюємо стан профілю
       setIsEditing(false);
+      setError(null);
     } catch (error) {
       setError("Failed to update profile");
       console.error("Failed to update profile:", error);
@@ -94,10 +111,16 @@ const Profile = () => {
         {/* 📷 Аватар */}
         <div style={styles.avatarContainer}>
           <label htmlFor="avatar-upload" style={styles.avatarUploadLabel}>
-            <img src={profile.avatar} alt="Profile Avatar" style={styles.profileAvatar} />
+            <img src={profile.avatarURL} alt="Profile Avatar" style={styles.profileAvatar} />
             <div style={styles.uploadText}>📷 Change</div>
           </label>
-          <input id="avatar-upload" type="file" accept="image/*" style={{ display: "none" }} onChange={handleFileUpload} />
+          <input
+            id="avatar-upload"
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleFileUpload}
+          />
         </div>
 
         {/* 🔷 Інформація */}
@@ -107,20 +130,29 @@ const Profile = () => {
             {isEditing ? (
               <input
                 type="text"
-                value={newName}
-                onChange={(e) => setNewName(e.target.value)}
+                name="username"
+                value={formData.username}
+                onChange={handleInputChange}
                 style={styles.inputField}
               />
             ) : (
               <span style={styles.neonDetail}>{profile.username}</span>
             )}
-            <button style={styles.editButton} onClick={() => setIsEditing(!isEditing)}>
-              ✎
-            </button>
           </p>
 
           <p>
-            <strong>Email:</strong> <span style={styles.neonDetail}>{profile.email}</span>
+            <strong>Email:</strong>{" "}
+            {isEditing ? (
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                style={styles.inputField}
+              />
+            ) : (
+              <span style={styles.neonDetail}>{profile.email}</span>
+            )}
           </p>
 
           {isEditing && (
@@ -132,13 +164,28 @@ const Profile = () => {
 
         {/* 🔵 Дії */}
         <div style={styles.profileActions}>
-          <button style={styles.neonButton} onClick={() => navigate(ROUTES.CONSTRUCTOR_OF_QUEST)}>
+          <button
+            style={styles.neonButton}
+            onClick={() => setIsEditing(!isEditing)}
+          >
+            {isEditing ? "Cancel Editing" : "✎ Edit Profile"}
+          </button>
+          <button
+            style={styles.neonButton}
+            onClick={() => navigate(ROUTES.CONSTRUCTOR_OF_QUEST)}
+          >
             ⚙️ Constructor of Quests
           </button>
-          <button style={styles.neonButton} onClick={() => navigate(ROUTES.MY_QUESTS)}>
+          <button
+            style={styles.neonButton}
+            onClick={() => navigate(ROUTES.MY_QUESTS)}
+          >
             📜 My Own Quests
           </button>
-          <button style={styles.neonButton} onClick={() => navigate(ROUTES.LOGOUT)}>
+          <button
+            style={styles.neonButton}
+            onClick={() => navigate(ROUTES.LOGOUT)}
+          >
             🚪 Log Out
           </button>
         </div>
@@ -163,7 +210,7 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     minHeight: "100vh",
-    background: 'linear-gradient(135deg, #0f0c29, #090818, #134f53)',
+    background: "linear-gradient(135deg, #0f0c29, #090818, #134f53)",
     padding: "20px",
   },
   profileCard: {
@@ -227,13 +274,6 @@ const styles = {
     padding: "5px",
     borderRadius: "5px",
     outline: "none",
-  },
-  editButton: {
-    background: "transparent",
-    border: "none",
-    color: "cyan",
-    cursor: "pointer",
-    marginLeft: "10px",
   },
   profileActions: {
     display: "flex",

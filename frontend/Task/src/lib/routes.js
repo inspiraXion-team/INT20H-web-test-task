@@ -18,7 +18,7 @@ export const getLogoutRoute = () => ROUTES.LOGOUT;
 export const getCompletedQuestsRoute = () => ROUTES.COMPLETED_QUESTS; // Додаємо функцію для отримання роуту
 export const getQuestPreviewRoute = () => ROUTES.QUEST_PREVIEW;
 export const getQuestRoute = () => ROUTES.QUEST;
-export const getMyQuestsRoute = () => ROUTES.QUEST;
+export const getMyQuestsRoute = () => ROUTES.MY_QUESTS;
 export const getConstructorOfQuestRoute = () => ROUTES.CONSTRUCTOR_OF_QUEST;
 
 
@@ -30,7 +30,7 @@ export const isLogoutRoute = (pathname) => pathname === ROUTES.LOGOUT;
 export const isCompletedQuestsRoute = (pathname) => pathname === ROUTES.COMPLETED_QUESTS; // Додаємо функцію для перевірки роуту
 export const isQuestPreviewRoute = (pathname) => pathname === ROUTES.QUEST_PREVIEW;
 export const isQuestRoute = (pathname) => pathname === ROUTES.QUEST;
-export const isMyQuestsRoute = (pathname) => pathname === ROUTES.QUEST;
+export const isMyQuestsRoute = (pathname) => pathname === ROUTES.MY_QUESTS;
 export const isConstructorOfQuestRoute = (pathname) => pathname === ROUTES.CONSTRUCTOR_OF_QUEST;
 
 export default ROUTES;

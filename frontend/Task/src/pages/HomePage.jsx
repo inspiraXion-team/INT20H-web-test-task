@@ -61,7 +61,7 @@ function HomePage() {
                     <p style={styles.heroText}>
                         With Quespiration, you can create quests for education, teambuilding, and for fun!
                     </p>
-                    <Link to={ROUTES.AUTH}>
+                    <Link to={ROUTES.CONSTRUCTOR_OF_QUEST}>
                         <button style={styles.createQuestButton}>Create a Quest</button>
                     </Link>
                 </div>
@@ -84,6 +84,7 @@ function HomePage() {
                 >
                     {bestQuests.map((quest, index) => (
                         <SwiperSlide key={index}>
+                            <Link to={ROUTES.QUEST_PREVIEW} className="text-decoration-none">
                             <Card style={styles.questCard}>
                                 <Card.Img variant="top" src={quest.image} style={styles.questImage} />
                                 <Card.Body style={styles.questInfo}>
@@ -94,6 +95,7 @@ function HomePage() {
                                     </div>
                                 </Card.Body>
                             </Card>
+                            </Link>
                         </SwiperSlide>
                     ))}
                 </Swiper>
