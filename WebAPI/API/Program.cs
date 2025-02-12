@@ -67,7 +67,7 @@ builder.Services.AddScoped<IQuestService, QuestService>();
 builder.Services.AddScoped<IQuestRatingService, QuestRatingService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var key = Encoding.UTF8.GetBytes(jwtSettings["Key"]);
+var key = Encoding.UTF8.GetBytes(jwtSettings["Secret"]);
 
 // Configuring authentication with Google and Facebook
 builder.Services.AddAuthentication(options =>
