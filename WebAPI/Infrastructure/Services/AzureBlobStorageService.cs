@@ -21,7 +21,7 @@ namespace Infrastructure.Services
             }
 
             _blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
-            _blobContainerClient.CreateIfNotExists(PublicAccessType.Blob);
+            //   _blobContainerClient.CreateIfNotExists(PublicAccessType.Blob);
         }
 
 
