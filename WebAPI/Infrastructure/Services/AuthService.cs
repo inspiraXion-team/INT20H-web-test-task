@@ -73,6 +73,7 @@ namespace Infrastructure.Services
         {
             var accessToken = GenerateAccessToken(user);
             var refreshToken = GenerateRefreshToken();
+            var refreshTokenExpiryDays = int.Parse(_configuration["JwtSettings:RefreshTokenExpirationDays"]);
 
             var refreshTokenRepo = _unitOfWork.Repository<RefreshToken>();
 
@@ -85,7 +86,7 @@ namespace Infrastructure.Services
             var newRefreshToken = new RefreshToken
             {
                 Token = refreshToken,
-                ExpiryTime = DateTime.UtcNow.AddDays(7),
+                ExpiryTime = DateTime.UtcNow.AddDays(refreshTokenExpiryDays),
                 UserId = user.Id
             };
 
@@ -101,22 +102,23 @@ namespace Infrastructure.Services
 
         private string GenerateAccessToken(User user)
         {
+            var accessTokenExpiryMinutes = int.Parse(_configuration["JwtSettings:AccessTokenExpirationMinutes"]);
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Secret"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Status.ToString())
-        };
+                new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, user.Status.ToString())
+            };
 
             var token = new JwtSecurityToken(
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
+                expires: DateTime.UtcNow.AddMinutes(accessTokenExpiryMinutes),
                 signingCredentials: credentials
             );
 
