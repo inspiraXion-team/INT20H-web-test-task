@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from '../../context/AuthContext';
 import { isAuthRoute } from "../../lib/routes";
+import ROUTES from "../../lib/routes";
 
 import "./Auth.css";
 
