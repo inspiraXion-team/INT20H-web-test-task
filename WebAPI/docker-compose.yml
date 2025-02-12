@@ -16,6 +16,17 @@ services:
     networks:
       - hakaton_network
 
+  frontend:
+    build:
+      context: ../frontend/Task
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    depends_on:
+      - api
+    networks:
+      - hakaton_network
+
 networks:
   hakaton_network:
     driver: bridge
