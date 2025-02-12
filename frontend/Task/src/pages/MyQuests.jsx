@@ -23,7 +23,6 @@ const MyQuests = () => {
         ⚙️ Constructor of Quests
       </button>
 
-      {/* Горизонтальний список без автоскролу */}
       <div style={styles.questsContainer}>
         {quests.map((quest, index) => (
           <div 
@@ -52,12 +51,11 @@ const MyQuests = () => {
   );
 };
 
-// **Стилі**
 const styles = {
   container: {
     textAlign: "center",
     color: "white",
-    background: "radial-gradient(circle, #001f3f, #000814)",
+      background: 'linear-gradient(135deg, #0f0c29,rgb(9, 8, 24),rgb(19, 79, 83))',
     padding: "20px",
     minHeight: "100vh",
   },

@@ -43,7 +43,7 @@ const Logout = () => {
   );
 };
 
-// 🌟 **Футуристичні кіберпанкові стилі**
+
 const styles = {
   logoutPage: {
     display: 'flex',
@@ -128,7 +128,6 @@ const styles = {
   },
 };
 
-// 🎭 **Додаткові CSS-анімації**
 const stylesWithAnimations = `
   @keyframes pulseShadow {
     0% { box-shadow: 0 0 25px rgba(0, 255, 255, 0.9); }
@@ -151,12 +150,11 @@ const stylesWithAnimations = `
   }
 
   @keyframes glowBackground {
-    0% { background: radial-gradient(circle, #000428, #004e92, #00e5ff); }
-    100% { background: radial-gradient(circle, #000428, #0077ff, #00ffcc); }
+    0% { background: radial-gradient(circle, #000428,rgb(3, 33, 59),rgb(11, 58, 63)); }
+    100% { background: radial-gradient(circle, #000428,rgb(11, 28, 47),rgb(14, 34, 30)); }
   }
 `;
 
-// 🛠 **Додаємо CSS-анімації в документ**
 const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = stylesWithAnimations;

@@ -76,7 +76,6 @@ form {
   transform: translateX(0);
 }
 
-/* Overlay */
 .overlay-container {
   position: absolute;
   top: 0;

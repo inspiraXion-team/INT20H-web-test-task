@@ -29,7 +29,6 @@ const ConstructorOfQuest = () => {
  const [questions, setQuestions] = useState({});
 
 
- // State for question forms
  const [openQuestion, setOpenQuestion] = useState({ question: '', answer: '' });
  const [testQuestion, setTestQuestion] = useState({
  question: '',
@@ -38,14 +37,14 @@ const ConstructorOfQuest = () => {
  });
  const [imageQuestion, setImageQuestion] = useState({
  image: null,
- area: { x1: 0, y1: 0, x2: 100, y2: 100 }, // Store as x1, y1, x2, y2
- isDrawing: false, // Track if user is currently drawing the area
+ area: { x1: 0, y1: 0, x2: 100, y2: 100 },
+ isDrawing: false,
  startX: 0,
  startY: 0
  });
 
 
- const imageRef = useRef(null); // Reference to the image element
+ const imageRef = useRef(null); 
 
 
  const customStyles = {
@@ -146,7 +145,7 @@ const ConstructorOfQuest = () => {
  setImageQuestion({
  ...imageQuestion,
  image: reader.result,
- area: { x1: 0, y1: 0, x2: 100, y2: 100 }, // Reset area on new image
+ area: { x1: 0, y1: 0, x2: 100, y2: 100 },
  });
  };
  reader.readAsDataURL(file);
@@ -162,7 +161,6 @@ const ConstructorOfQuest = () => {
 
 
  const handlePublishQuest = () => {
- // Implement your publish quest logic here
  console.log('Publishing quest:', {
  questName,
  legend,
@@ -172,12 +170,11 @@ const ConstructorOfQuest = () => {
  maxParticipants,
  questions,
  });
- alert('Quest published!'); // Replace with actual publishing logic
+ alert('Quest published!'); 
  };
 
 
  const handleSaveDraft = () => {
- // Implement your save draft logic here
  console.log('Saving quest draft:', {
  questName,
  legend,
@@ -187,11 +184,10 @@ const ConstructorOfQuest = () => {
  maxParticipants,
  questions,
  });
- alert('Quest draft saved!'); // Replace with actual saving logic
+ alert('Quest draft saved!'); 
  };
 
 
- // Image selection functions
  const handleImageMouseDown = (e) => {
  if (!imageRef.current) return;
  const rect = imageRef.current.getBoundingClientRect();
@@ -204,7 +200,7 @@ const ConstructorOfQuest = () => {
  isDrawing: true,
  startX: x,
  startY: y,
- area: { x1: x, y1: y, x2: x, y2: y } // Initialize area
+ area: { x1: x, y1: y, x2: x, y2: y } 
  });
  };
 
@@ -254,7 +250,7 @@ const ConstructorOfQuest = () => {
     placeholder="Enter quest name"
     value={questName}
     onChange={(e) => setQuestName(e.target.value)}
-    className="w-100" // Додаємо клас для ширини 100%
+    className="w-100" 
   />
 
 
@@ -340,7 +336,7 @@ const ConstructorOfQuest = () => {
  onMouseDown={handleImageMouseDown}
  onMouseMove={handleImageMouseMove}
  onMouseUp={handleImageMouseUp}
- onMouseLeave={handleImageMouseUp} // Important for when the mouse leaves the image
+ onMouseLeave={handleImageMouseUp}
  >
  <img
  src={q.image}
@@ -357,7 +353,7 @@ const ConstructorOfQuest = () => {
  width: Math.abs(q.area.x2 - q.area.x1),
  height: Math.abs(q.area.y2 - q.area.y1),
  border: '2px solid red',
- pointerEvents: 'none' // Make sure the div doesn't block mouse events
+ pointerEvents: 'none' 
  }}
  ></div>
  ) : null}
@@ -426,7 +422,7 @@ const ConstructorOfQuest = () => {
  variant="primary"
  className="w-100 mb-2"
  onClick={() => {
- setOpenQuestion({ question: '', answer: '' }); // Reset open question state
+ setOpenQuestion({ question: '', answer: '' }); 
  handleQuestionAdd('open');
  }}
  >
@@ -436,7 +432,7 @@ const ConstructorOfQuest = () => {
  variant="primary"
  className="w-100 mb-2"
  onClick={() => {
- setTestQuestion({ question: '', options: ['', '', '', ''], correctOption: null }); // Reset test question state
+ setTestQuestion({ question: '', options: ['', '', '', ''], correctOption: null }); 
  handleQuestionAdd('test');
  }}
  >
@@ -452,7 +448,7 @@ const ConstructorOfQuest = () => {
  isDrawing: false,
  startX: 0,
  startY: 0
- }); // Reset image question state
+ }); 
  handleQuestionAdd('image');
  }}
  >

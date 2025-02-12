@@ -6,7 +6,6 @@ function Footer() {
     <footer style={styles.footer}>
       <div style={styles.container}>
         <div style={styles.grid}>
-          {/* 🔹 Логотип і навігація */}
           <div style={styles.column}>
             <h5 style={styles.glowText}>⚡ Quespiration</h5>
             <ul style={styles.list}>
@@ -16,7 +15,6 @@ function Footer() {
             </ul>
           </div>
 
-          {/* 📡 Контакти */}
           <div style={styles.column}>
             <h5 style={styles.glowText}>📡 Contact Us</h5>
             <ul style={styles.list}>
@@ -26,7 +24,6 @@ function Footer() {
           </div>
         </div>
 
-        {/* 🔹 Авторські права */}
         <div style={styles.copyright}>
           <p>© 2025 Quespiration Corporation</p>
           <p>🌐 All Rights Reserved</p>
@@ -35,8 +32,6 @@ function Footer() {
     </footer>
   );
 }
-
-// 🎨 **Футуристичні кіберпанкові стилі**
 const styles = {
   footer: {
     background: 'radial-gradient(circle, #001f3f, #000a1f, #000519)',
@@ -75,34 +70,26 @@ const styles = {
     padding: 0,
   },
   neonLink: {
-    color: '#00e5ff',
-    fontSize: '18px',
+    color: 'white',
+    fontSize: '22px',
     textDecoration: 'none',
     display: 'block',
     marginTop: '8px',
-    textShadow: '0 0 15px rgba(0, 229, 255, 0.8)',
     fontFamily: "'Orbitron', sans-serif",
     transition: '0.3s ease-in-out',
   },
-  neonLinkHover: {
-    textShadow: '0 0 25px rgba(0, 229, 255, 1)',
-  },
   neonText: {
-    color: '#00ffcc',
-    fontSize: '18px',
-    textShadow: '0 0 10px rgb(255, 255, 255)',
+    color: 'white',
+    fontSize: '22px',
     fontFamily: "'Orbitron', sans-serif",
   },
   copyright: {
     marginTop: '30px',
     color: '#ffffff',
-    fontSize: '14px',
-    textShadow: '0 0 10px rgba(255, 255, 255, 0.8)',
+    fontSize: '24px',
     fontFamily: "'Orbitron', sans-serif",
   },
 };
-
-// 🎭 **Додаткові CSS-анімації**
 const stylesWithAnimations = `
   @keyframes pulseFooter {
     0% { box-shadow: 0 -4px 25px rgba(0, 229, 255, 0.8); }
@@ -115,7 +102,6 @@ const stylesWithAnimations = `
   }
 `;
 
-// 🛠 **Додаємо CSS-анімації в документ**
 const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = stylesWithAnimations;

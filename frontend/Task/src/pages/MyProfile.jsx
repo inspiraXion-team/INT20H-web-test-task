@@ -12,7 +12,6 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState(profile.username);
 
-  // Оновлення аватарки
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -27,7 +26,7 @@ const Profile = () => {
     }
   };
 
-  // Оновлення імені
+
   const handleSave = () => {
     setProfile((prev) => ({
       ...prev,
@@ -36,7 +35,6 @@ const Profile = () => {
     setIsEditing(false);
   };
 
-  // Масив досягнень (іконки)
   const achievements = [
     { icon: "🏅", title: "First Step" },
     { icon: "🧩", title: "Puzzle Master" },
@@ -49,8 +47,7 @@ const Profile = () => {
     <div style={styles.profilePage}>
       <div style={styles.profileCard}>
         <h1 style={styles.neonText}>My Profile</h1>
-
-        {/* 📷 Аватар */}
+    
         <div style={styles.avatarContainer}>
           <label htmlFor="avatar-upload" style={styles.avatarUploadLabel}>
             <img src={profile.avatar} alt="Profile Avatar" style={styles.profileAvatar} />
@@ -59,7 +56,7 @@ const Profile = () => {
           <input id="avatar-upload" type="file" accept="image/*" style={{ display: "none" }} onChange={handleFileUpload} />
         </div>
 
-        {/* 🔷 Інформація */}
+  
         <div style={styles.profileInfo}>
           <p>
             <strong>Username:</strong>{" "}
@@ -89,7 +86,7 @@ const Profile = () => {
           )}
         </div>
 
-        {/* 🔵 Дії */}
+
         <div style={styles.profileActions}>
           <button style={styles.neonButton} onClick={() => navigate(ROUTES.CONSTRUCTOR_OF_QUEST)}>
             ⚙️ Constructor of Quests
@@ -103,7 +100,6 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* 🏆 Досягнення */}
       <div style={styles.achievementsSection}>
         {achievements.map((ach, index) => (
           <div key={index} style={styles.achievementItem} title={ach.title}>
@@ -115,7 +111,7 @@ const Profile = () => {
   );
 };
 
-// 🎨 **Стилі**
+
 const styles = {
   profilePage: {
     display: "flex",
@@ -126,7 +122,7 @@ const styles = {
     padding: "20px",
   },
   profileCard: {
-    background: "rgba(14, 70, 54, 0.85)",
+    background: "rgba(8, 23, 53, 0.91)",
     borderRadius: "10px",
     boxShadow: "0 0 35px rgba(0, 255, 255, 0.5)",
     padding: "20px",

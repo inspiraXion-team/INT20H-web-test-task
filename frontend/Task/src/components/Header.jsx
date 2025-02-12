@@ -2,26 +2,27 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import ROUTES from '../lib/routes';
 import logo from "../assets/logo.png";
-import userPhoto from '../assets/user-photo.png'; // User photo
+import userPhoto from '../assets/user-photo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Container, Button, Dropdown } from 'react-bootstrap';
 
 function Header() {
-  // Styles for the header
   const styles = {
     customHeader: {
       background: 'linear-gradient(135deg, #0f0c29,rgb(9, 8, 24),rgb(19, 79, 83))',
-      padding: '8px 0',
-      boxShadow: '0 0 20px rgba(0, 255, 255, 0.5)', // Neon glow effect
+      padding: '3px 0',
+      boxShadow: '0 0 20px rgba(0, 255, 255, 0.5)',
       borderBottom: '1px solid rgba(0, 255, 255, 0.2)',
     },
     customLogo: {
-      height: '50px',
-      filter: 'drop-shadow(0 0 10px rgba(0, 255, 255, 0.7))', // Neon glow effect for logo
+        height: '250px', 
+  padding: '10px 20px',
+  marginTop: '20px',
+  filter: 'drop-shadow(0 0 5px rgba(0, 255, 255, 0.7))', 
     },
     userPhoto: {
-      width: '40px',
-      height: '40px',
+      width: '90px',
+      height: '90px',
       cursor: 'pointer',
       borderRadius: '50%',
       transition: 'transform 0.3s, box-shadow 0.3s',
@@ -40,12 +41,12 @@ function Header() {
       boxShadow: '0 4px 15px rgba(0, 255, 255, 0.3)',
     },
     dropdownItem: {
-      color: 'black', // Neon cyan color for dropdown items
+      color: 'black', 
       transition: 'background-color 0.3s, color 0.3s, transform 0.3s',
-      padding: '10px 20px',
+      padding: '20px 50px',
     },
     dropdownItemHover: {
-      backgroundColor: 'rgba(0, 255, 255, 0.1)', // Light cyan on hover
+      backgroundColor: 'rgba(0, 255, 255, 0.1)',
       color: '#ffffff',
       transform: 'translateX(5px)',
     },
@@ -55,7 +56,7 @@ function Header() {
       border: '2px solid #00ffff',
       borderRadius: '5px',
       padding: '10px 20px',
-      fontSize: '16px',
+      fontSize: '18px',
       transition: 'background-color 0.3s, transform 0.3s, box-shadow 0.3s',
       textShadow: '0 0 5px rgba(0, 255, 255, 0.3)',
     },
@@ -84,17 +85,14 @@ function Header() {
     <header style={styles.customHeader}>
       <Navbar expand="lg" className="navbar-light bg-transparent">
         <Container fluid>
-          {/* Логотип */}
           <Navbar.Brand as={Link} to={ROUTES.HOME}>
             <img src={logo} alt="Logo" style={styles.customLogo} />
           </Navbar.Brand>
 
-          {/* Бургер-кнопка для мобільних пристроїв */}
           <Navbar.Toggle aria-controls="navbar-nav" className="border-0">
             <span className="navbar-toggler-icon" style={{ filter: 'drop-shadow(0 0 5px rgba(0, 255, 255, 0.5))' }} />
           </Navbar.Toggle>
 
-          {/* Меню */}
           <Navbar.Collapse id="navbar-nav" className="justify-content-end">
             <Nav style={styles.navbarNav}>
               <Nav.Link as={Link} to={ROUTES.AUTH}>
@@ -116,7 +114,6 @@ function Header() {
               </Nav.Link>
             </Nav>
 
-            {/* Вибір мови */}
             <div className="btn-group me-3">
               <Button
                 style={styles.languageButton}
@@ -150,7 +147,6 @@ function Header() {
               </Button>
             </div>
 
-            {/* Фото користувача з меню */}
             <Dropdown align="end">
               <Dropdown.Toggle as="div" className="user-dropdown">
                 <img

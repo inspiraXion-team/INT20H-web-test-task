@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import ROUTES from '../lib/routes';
 
-// Імпорт зображень
+
 import news1 from '../assets/news1.png';
 import news2 from '../assets/news2.png';
 import news3 from '../assets/news3.png';
@@ -54,7 +54,6 @@ function HomePage() {
                 />
             </div>
 
-            {/* 🎮 Геройська секція */}
             <section style={styles.heroSection}>
                 <div style={styles.heroTextContainer}>
                     <h1 style={styles.heroTitle}>Build your own quest!</h1>
@@ -68,7 +67,7 @@ function HomePage() {
                 <img src={heroImage} alt="Hero" style={styles.heroImage} />
             </section>
 
-            {/* 🎮 Best Quests */}
+
             <section style={styles.section}>
                 <h2 style={styles.sectionTitle}> Best Quests</h2>
                 <Swiper
@@ -99,7 +98,6 @@ function HomePage() {
                 </Swiper>
             </section>
 
-            {/* 🚀 What's New */}
             <section style={styles.newsSection}>
                 <h2 style={styles.sectionTitle}>🚀 What's New?</h2>
                 <Swiper
@@ -174,7 +172,6 @@ const styles = {
     section: { padding: '60px 0', textAlign: 'center' },
     sectionTitle: { fontSize: '2.5rem', color: 'white', textShadow: '0 0 10px' },
 
-    // 🏆 Best Quests Swiper
     questSwiper: { padding: '20px' },
     questCard: {
         background: 'rgba(0, 0, 0, 0.5)',
@@ -195,7 +192,6 @@ const styles = {
     questTitle: { fontSize: '1.5rem', color: 'white', textShadow: '0 0 5px cyan' },
     ratingContainer: { marginTop: '10px', fontSize: '1.1rem', color: '#0ff' },
 
-    // 🚀 What's New (анімація Coverflow)
     newsCard: { padding: '20px', textAlign: 'center', boxShadow: '0 0 15px rgba(0, 255, 255, 0.5)' },
     newsImage: { width: '100%', borderRadius: '10px' },
     newsTitle: { marginTop: '10px', color: 'white' },
