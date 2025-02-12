@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpPost("save")]
-        public async Task<IActionResult> SaveQuest(CreateQuestDTO questDTO)
+        public async Task<IActionResult> SaveQuest([FromBody] CreateQuestDTO questDTO)
         {
             if (questDTO == null)
             {
