@@ -124,5 +124,3 @@ docker system prune -a
 ```sh
 docker ps
 ```
-
-> > > > > > > 5317ced05954df883c3d188b77e28966ab429f41
