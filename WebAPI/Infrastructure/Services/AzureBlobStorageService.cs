@@ -9,14 +9,20 @@ namespace Infrastructure.Services
     {
         private readonly BlobContainerClient _blobContainerClient;
 
-        public AzureBlobStorageService()
+        public AzureBlobStorageService(IConfiguration configuration)
         {
-            var blobConnectionString = Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE_CONNECTION_STRING");
-            var blobContainerName = Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE_CONTAINER_NAME");
+            var blobConnectionString = configuration["AZURE_BLOB_STORAGE_CONNECTION_STRING"];
+            var blobContainerName = configuration["AZURE_BLOB_STORAGE_CONTAINER_NAME"];
+
+            if (string.IsNullOrEmpty(blobConnectionString) || string.IsNullOrEmpty(blobContainerName))
+            {
+                throw new ArgumentException("Azure Blob Storage connection string or container name is missing.");
+            }
 
             _blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
             _blobContainerClient.CreateIfNotExists(PublicAccessType.Blob);
         }
+
 
         public async Task<string> UploadFileAsync(IFormFile file)
         {

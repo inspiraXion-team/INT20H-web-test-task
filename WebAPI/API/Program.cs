@@ -13,12 +13,17 @@ var builder = WebApplication.CreateBuilder(args);
 // Loading variables from the .env file
 Env.Load();
 
+builder.Configuration.AddEnvironmentVariables();
+
 // Getting secret values from the .env
 var dbConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 var googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
 var googleClientSecret = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_SECRET");
 var facebookClientId = Environment.GetEnvironmentVariable("FACEBOOK_CLIENT_ID");
 var facebookClientSecret = Environment.GetEnvironmentVariable("FACEBOOK_CLIENT_SECRET");
+
+Console.WriteLine("AZURE_BLOB_STORAGE_CONNECTION_STRING: " + Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE_CONNECTION_STRING"));
+Console.WriteLine("AZURE_BLOB_STORAGE_CONTAINER_NAME: " + Environment.GetEnvironmentVariable("AZURE_BLOB_STORAGE_CONTAINER_NAME"));
 
 // Checking if the required values are present
 if (string.IsNullOrEmpty(dbConnectionString) ||
