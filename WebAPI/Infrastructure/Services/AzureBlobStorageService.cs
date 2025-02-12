@@ -21,7 +21,6 @@ namespace Infrastructure.Services
             }
 
             _blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
-            _blobContainerClient.CreateIfNotExists(PublicAccessType.Blob);
         }
 
         public async Task<string> UploadFileAsync(IFormFile file)

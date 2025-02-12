@@ -34,13 +34,5 @@ namespace API.Controllers
             var quests = await _questService.GetPublishedQuests();
             return Ok(quests);
         }
-
-        [Authorize]
-        [HttpGet("test")]
-        public async Task<IActionResult> Test()
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            return Ok(new { message = userId });
-        }
     }
 }
