@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Loading variables from the .env file
 Env.Load();
 
+builder.Configuration.AddEnvironmentVariables();
 // Getting secret values from the .env
 var dbConnectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 var googleClientId = Environment.GetEnvironmentVariable("GOOGLE_CLIENT_ID");
