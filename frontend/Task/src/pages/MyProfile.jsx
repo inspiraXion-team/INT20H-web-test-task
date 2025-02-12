@@ -1,16 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../lib/routes";
+import { ProfileService } from "../services/api/profile.service"; // Імпортуйте ProfileService
 
 const Profile = () => {
   const navigate = useNavigate();
   const [profile, setProfile] = useState({
-    username: "JohnDoe",
-    email: "email@gmail.com",
+    username: "",
+    email: "",
     avatar: "https://via.placeholder.com/150",
   });
   const [isEditing, setIsEditing] = useState(false);
-  const [newName, setNewName] = useState(profile.username);
+  const [newName, setNewName] = useState("");
+  const [avatarFile, setAvatarFile] = useState(null);
+
+  // Отримання даних профілю при завантаженні компонента
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await ProfileService.getProfile();
+        setProfile({
+          username: data.username,
+          email: data.email,
+          avatar: data.avatarUrl || profile.avatar, // Використовуйте URL аватарки з API
+        });
+        setNewName(data.username);
+      } catch (error) {
+        console.error("Failed to fetch profile:", error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   // Оновлення аватарки
   const handleFileUpload = (e) => {
@@ -24,16 +45,23 @@ const Profile = () => {
         }));
       };
       reader.readAsDataURL(file);
+      setAvatarFile(file);
     }
   };
 
-  // Оновлення імені
-  const handleSave = () => {
-    setProfile((prev) => ({
-      ...prev,
-      username: newName,
-    }));
-    setIsEditing(false);
+  // Оновлення профілю
+  const handleSave = async () => {
+    try {
+      const updatedProfile = await ProfileService.updateProfile(newName, avatarFile);
+      setProfile({
+        username: updatedProfile.username,
+        email: updatedProfile.email,
+        avatar: updatedProfile.avatarUrl || profile.avatar,
+      });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+    }
   };
 
   // Масив досягнень (іконки)

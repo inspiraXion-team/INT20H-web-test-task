@@ -21,7 +21,7 @@ namespace Infrastructure.Services
             }
 
             _blobContainerClient = new BlobContainerClient(blobConnectionString, blobContainerName);
-
+        }
 
         public async Task<string> UploadFileAsync(IFormFile file)
         {

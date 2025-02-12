@@ -1,74 +1,96 @@
 import axiosInstance from './axios-instance';
 
 export const QuestService = {
-  // Function to retrieve the token from storage (localStorage in this case)
   getToken() {
-    return localStorage.getItem('accessToken'); // Adjust based on how your token is stored
+    return localStorage.getItem('accessToken');
   },
 
-  // Helper function to get headers with the token
   getHeaders() {
-    const token = this.getToken();
-    return token ? { 'Authorization': `Bearer ${token}` } : {};
-  },
-
-  async getQuestById(id) {
-    const response = await axiosInstance.get(`/api/quest/${id}`, {
-      headers: this.getHeaders(),
-    });
-    return response.data;
-  },
-
-  async getAllPublishedQuests() {
-    const response = await axiosInstance.get('/api/quest/all/published', {
-      headers: this.getHeaders(),
-    });
-    return response.data;
+    const token = this.getToken(); // Отримуємо токен
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
   },
 
   async saveQuest(questData) {
-    const formData = new FormData();
-    
-    // Add the main quest data
-    formData.append('Title', questData.title);
-    formData.append('Description', questData.description);
-    formData.append('TimeLimit', questData.timeLimit);
-    formData.append('IsPublished', questData.isPublished);
-    
-    // Add the poster if it exists
-    if (questData.poster) {
-      formData.append('Poster', questData.poster);
+    try {
+      // Transform the questions data into the required format
+      const formattedTasks = Object.entries(questData.questions || {}).map(([levelId, questions]) => {
+        return questions.map((question, index) => {
+          // Base task structure that matches API requirements
+          const baseTask = {
+            title: question.question || `Question ${index + 1}`,
+            questionType: 0,
+            order: parseInt(levelId),
+            taskOptions: [],
+            taskWrite: {
+              answer: ""
+            },
+            taskImage: {
+              image: "",
+              answerX1: 0,
+              answerY1: 0,
+              answerX2: 0,
+              answerY2: 0
+            },
+            mediaFiles: []
+          };
+  
+          // Set specific fields based on question type
+          switch (question.type) {
+            case 'test':
+              baseTask.questionType = 0;
+              baseTask.taskOptions = question.options.map((optionText, idx) => ({
+                optionText: optionText || "",
+                isCorrect: idx === question.correctOption
+              }));
+              break;
+  
+            case 'open':
+              baseTask.questionType = 1;
+              baseTask.taskWrite = {
+                answer: question.answer || ""
+              };
+              break;
+  
+            case 'image':
+              baseTask.questionType = 2;
+              baseTask.taskImage = {
+                image: question.image || "",
+                answerX1: question.area?.x1 || 0,
+                answerY1: question.area?.y1 || 0,
+                answerX2: question.area?.x2 || 0,
+                answerY2: question.area?.y2 || 0
+              };
+              break;
+          }
+  
+          return baseTask;
+        });
+      }).flat();
+  
+      // Construct the exact request body structure required by the API
+      const requestBody = {
+        questDTO: {
+          Title: questData.questName || "Default Quest Title", // Змінено title на Title
+          description: questData.legend || "",
+          timeLimit: parseInt(questData.timeLimit) || 0,
+          poster: "", // Empty string for now since it's not handled in this version
+          isPublished: true,
+          tasks: formattedTasks
+        }
+      };
+  
+      // Make the request with headers
+      const response = await axiosInstance.post('/api/quest-constructor/save', requestBody, {
+        headers: this.getHeaders() // Передаємо заголовки
+      });
+      return response.data;
+  
+    } catch (error) {
+      console.error('Error in saveQuest:', error);
+      throw error;
     }
-
-    // Add tasks if they exist
-    if (questData.tasks) {
-      formData.append('Tasks', JSON.stringify(questData.tasks));
-    }
-
-    const response = await axiosInstance.post('/api/quest-constructor/save', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        ...this.getHeaders(),  // Add Authorization token here
-      },
-    });
-    return response.data;
-  },
-
-  async getQuestForEditing(questId) {
-    const response = await axiosInstance.get(`/api/quest-constructor/${questId}`, {
-      headers: this.getHeaders(),
-    });
-    return response.data;
-  },
-
-  async rateQuest(questId, rating, comment) {
-    const response = await axiosInstance.post('/api/quest-rating', {
-      questId,
-      rating,
-      comment
-    }, {
-      headers: this.getHeaders(),
-    });
-    return response.data;
   }
 };
