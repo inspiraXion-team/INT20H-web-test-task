@@ -1,54 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "../lib/routes";
 
-const MyQuests = () => {
-  const navigate = useNavigate();
-  const [hovered, setHovered] = useState(null);
+import { Container, Card, Row, Col, Button } from 'react-bootstrap';
+import { ProfileService } from '../services/api/profile.service';
 
-  const quests = [
-    { id: 1, name: "Cyber Explorer", level: "Рівень 1", status: "Активний", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+1" },
-    { id: 2, name: "Neon Hacker", level: "Рівень 2", status: "Завершений", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+2" },
-    { id: 3, name: "Data Runner", level: "Рівень 3", status: "В очікуванні", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+3" },
-    { id: 4, name: "Shadow Seeker", level: "Рівень 4", status: "Активний", image: "https://via.placeholder.com/300x200.png?text=Cyber+Quest+4" },
-  ];
+const MyQuests = () => {
+  const [quests, setQuests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchQuests = async () => {
+      try {
+        const data = await ProfileService.getUserQuests();
+        setQuests(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQuests();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.neonText}>📜 My Own Quests</h1>
-      <button 
-        style={styles.neonButton} 
-        onClick={() => navigate(ROUTES.CONSTRUCTOR_OF_QUEST)}
-      >
-        ⚙️ Constructor of Quests
-      </button>
-
-      {/* Горизонтальний список без автоскролу */}
-      <div style={styles.questsContainer}>
-        {quests.map((quest, index) => (
-          <div 
-            key={quest.id} 
-            style={{
-              ...styles.questCard, 
-              ...(hovered === index ? styles.hoveredCard : {}),
-            }}
-            onMouseEnter={() => setHovered(index)}
-            onMouseLeave={() => setHovered(null)}
-          >
-            <img src={quest.image} alt={quest.name} style={styles.questImage} />
-            <h3 style={styles.questTitle}>{quest.name}</h3>
-            <p style={styles.questDetails}>Рівень: {quest.level}</p>
-            <p style={styles.questDetails}>Статус: {quest.status}</p>
-            <button 
-              style={styles.neonButton} 
-              onClick={() => navigate(`${ROUTES.QUEST_DETAILS}/${quest.id}`)}
-            >
-              🔍 Деталі
-            </button>
-          </div>
+    <Container>
+      <h1>My Quests</h1>
+      <Row>
+        {quests.map((quest) => (
+          <Col key={quest.id} md={4} className="mb-4">
+            <Card>
+              <Card.Img variant="top" src={quest.posterURL} />
+              <Card.Body>
+                <Card.Title>{quest.title}</Card.Title>
+                <Button variant="primary" href={`/quest/${quest.id}`}>
+                  View Quest
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 

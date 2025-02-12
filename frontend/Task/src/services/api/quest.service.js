@@ -6,19 +6,27 @@ export const QuestService = {
   },
 
   getHeaders() {
-    const token = this.getToken(); // Отримуємо токен
+    const token = this.getToken();
     return {
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      'Content-Type': 'multipart/form-data' // Змінено на multipart/form-data
     };
   },
 
   async saveQuest(questData) {
     try {
-      // Transform the questions data into the required format
+      // Створюємо об'єкт FormData для multipart/form-data
+      const formData = new FormData();
+
+      // Додаємо основні поля
+      formData.append('Title', questData.questName || "Default Quest Title");
+      formData.append('Description', questData.legend || "");
+      formData.append('TimeLimit', parseInt(questData.timeLimit) || 0);
+      formData.append('IsPublished', true);
+
+      // Додаємо завдання (Tasks)
       const formattedTasks = Object.entries(questData.questions || {}).map(([levelId, questions]) => {
         return questions.map((question, index) => {
-          // Base task structure that matches API requirements
           const baseTask = {
             title: question.question || `Question ${index + 1}`,
             questionType: 0,
@@ -36,8 +44,7 @@ export const QuestService = {
             },
             mediaFiles: []
           };
-  
-          // Set specific fields based on question type
+
           switch (question.type) {
             case 'test':
               baseTask.questionType = 0;
@@ -46,14 +53,14 @@ export const QuestService = {
                 isCorrect: idx === question.correctOption
               }));
               break;
-  
+
             case 'open':
               baseTask.questionType = 1;
               baseTask.taskWrite = {
                 answer: question.answer || ""
               };
               break;
-  
+
             case 'image':
               baseTask.questionType = 2;
               baseTask.taskImage = {
@@ -65,29 +72,26 @@ export const QuestService = {
               };
               break;
           }
-  
+
           return baseTask;
         });
       }).flat();
-  
-      // Construct the exact request body structure required by the API
-      const requestBody = {
-        questDTO: {
-          Title: questData.questName || "Default Quest Title", // Змінено title на Title
-          description: questData.legend || "",
-          timeLimit: parseInt(questData.timeLimit) || 0,
-          poster: "", // Empty string for now since it's not handled in this version
-          isPublished: true,
-          tasks: formattedTasks
-        }
-      };
-  
-      // Make the request with headers
-      const response = await axiosInstance.post('/api/quest-constructor/save', requestBody, {
-        headers: this.getHeaders() // Передаємо заголовки
+
+      // Додаємо завдання до форми
+      formData.append('Tasks', JSON.stringify(formattedTasks));
+
+      // Додаємо файли (наприклад, зображення для завдань)
+      if (questData.questPoster) {
+        formData.append('Poster', questData.questPoster);
+      }
+
+      // Відправляємо запит
+      const response = await axiosInstance.post('/api/quest-constructor/save', formData, {
+        headers: this.getHeaders()
       });
+
       return response.data;
-  
+
     } catch (error) {
       console.error('Error in saveQuest:', error);
       throw error;

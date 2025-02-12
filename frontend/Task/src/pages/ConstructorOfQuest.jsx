@@ -189,27 +189,26 @@ const ConstructorOfQuest = () => {
 
   const handleSaveQuest = async () => {
     try {
-        const response = await QuestService.saveQuest({
-            questName,
-            legend,
-            timeLimit,
-            questions
-        });
-
-        console.log('Quest saved successfully:', response);
-        alert('Quest saved successfully!');
+      const response = await QuestService.saveQuest({
+        questName,
+        legend,
+        timeLimit,
+        questions,
+        questPoster // Додаємо questPoster до даних
+      });
+  
+      console.log('Quest saved successfully:', response);
+      alert('Quest saved successfully!');
     } catch (error) {
-        console.error('Error saving quest:', error);
-
-        // Перевірка на специфічні помилки від API
-        if (error.response) {
-            alert(`Failed to save quest: ${error.response.data.message || 'Unknown error'}`);
-        } else {
-            alert('Failed to save quest. Please try again.');
-        }
+      console.error('Error saving quest:', error);
+  
+      if (error.response) {
+        alert(`Failed to save quest: ${error.response.data.message || 'Unknown error'}`);
+      } else {
+        alert('Failed to save quest. Please try again.');
+      }
     }
-};
-
+  };
 
   // Add file upload buttons to the UI
   const FileUploadButtons = () => (
