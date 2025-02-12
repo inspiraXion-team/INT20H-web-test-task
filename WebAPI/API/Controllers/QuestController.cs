@@ -1,4 +1,6 @@
-﻿using Domain.Interfaces;
+﻿using System.Security.Claims;
+using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -31,6 +33,14 @@ namespace API.Controllers
         {
             var quests = await _questService.GetPublishedQuests();
             return Ok(quests);
+        }
+
+        [Authorize]
+        [HttpGet("test")]
+        public async Task<IActionResult> Test()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            return Ok(new { message = userId });
         }
     }
 }

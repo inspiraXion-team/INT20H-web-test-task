@@ -2,6 +2,7 @@
 using Azure.Storage.Blobs;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Services
 {
