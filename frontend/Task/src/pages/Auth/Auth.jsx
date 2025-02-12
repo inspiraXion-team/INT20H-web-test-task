@@ -1,13 +1,19 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios"; // Додаємо axios
-import { useLocation } from "react-router-dom";
-import { isAuthRoute } from "../../lib/routes";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import React, { useEffect, useState } from "react";
+// Додаємо axios
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { useAuth } from '../../context/AuthContext';
+import { isAuthRoute } from "../../lib/routes";
+
 import "./Auth.css";
 
 const Auth = () => {
+  const { login } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const [isLoginMode, setIsLoginMode] = useState(false);
   const [isFBLoaded, setIsFBLoaded] = useState(false);
   const [manualEmail, setManualEmail] = useState("");
@@ -103,12 +109,21 @@ const sendLoginDataToBackend = async (data) => {
       }
     );
     console.log("Server Response:", response.data);
+  
+    // Save tokens and update auth state
+    login(response.data.accessToken, response.data.refreshToken);
+      
+    // Redirect to the protected page or home
+    const from = location.state?.from?.pathname || ROUTES.HOME;
+    navigate(from, { replace: true });
+  
   } catch (error) {
     if (error.response) {
       console.error(`Error ${error.response.status}:`, error.response.data);
     } else {
       console.error("Error sending data to server:", error);
     }
+    console.error("Login error:", error);
   }
 };
 
@@ -128,7 +143,30 @@ const sendLoginDataToBackend = async (data) => {
 
     // Відправка даних на сервер
     await sendSignUpDataToBackend(userData);
-    
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/auth/external-login/google',
+        {
+          accessToken: credentialResponse.credential
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // Save tokens and update auth state
+      login(response.data.accessToken, response.data.refreshToken);
+      
+      // Redirect to home after successful signup
+      navigate(ROUTES.HOME, { replace: true });
+      
+    } catch (error) {
+      console.error('Google signup error:', error);
+    }
+
   };
 
   const handleGoogleSignUpError = () => {
@@ -137,14 +175,14 @@ const sendLoginDataToBackend = async (data) => {
 
   // Обробка авторизації через Facebook
   
-const handleFacebookSignUp = () => {
+const handleFacebookSignUp = async () => {
   if (!window.FB) {
     console.error("Facebook SDK not loaded");
     return;
   }
 
   window.FB.login(
-    (response) => {
+    async (response) => {
       if (response.authResponse) {
         console.log("Facebook auth response:", response.authResponse);
         
@@ -183,6 +221,30 @@ const handleFacebookSignUp = () => {
             }
           }
         );
+
+        try {
+          const fbResponse = await axios.post(
+            'http://localhost:8080/api/auth/external-login/facebook',
+            {
+              accessToken: response.authResponse.accessToken
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+
+          // Save tokens and update auth state
+          login(fbResponse.data.accessToken, fbResponse.data.refreshToken);
+          
+          // Redirect to home after successful signup
+          navigate(ROUTES.HOME, { replace: true });
+
+        } catch (error) {
+          console.error('Facebook signup error:', error);
+        }
+
       } else {
         console.log("User cancelled login or did not fully authorize.");
       }
@@ -237,7 +299,7 @@ const handleFacebookLogin = async () => {
   }
 
   window.FB.login(
-    (response) => {
+    async (response) => {
       if (response.authResponse) {
         console.log("Facebook auth response:", response.authResponse);
         
@@ -265,6 +327,31 @@ const handleFacebookLogin = async () => {
             }
           }
         );
+
+        try {
+          const fbResponse = await axios.post(
+            'http://localhost:8080/api/auth/external-login/facebook',
+            {
+              accessToken: response.authResponse.accessToken
+            },
+            {
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            }
+          );
+
+          // Save tokens and update auth state
+          login(fbResponse.data.accessToken, fbResponse.data.refreshToken);
+          
+          // Redirect to the protected page or home
+          const from = location.state?.from?.pathname || ROUTES.HOME;
+          navigate(from, { replace: true });
+
+        } catch (error) {
+          console.error('Facebook login error:', error);
+        }
+
       } else {
         console.log("User cancelled login or did not fully authorize.");
       }
@@ -294,6 +381,30 @@ const handleGoogleLoginSuccess = async (credentialResponse) => {
   // Зберігаємо refreshToken у локальному сховищі
   const refreshToken = decodedToken.refresh_token; // Припускаємо, що refresh_token є частиною декодованого токену
   localStorage.setItem("refreshToken", refreshToken);
+
+  try {
+    const response = await axios.post(
+      'http://localhost:8080/api/auth/external-login/google',
+      {
+        accessToken: credentialResponse.credential
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    // Save tokens and update auth state
+    login(response.data.accessToken, response.data.refreshToken);
+    
+    // Redirect to the protected page or home
+    const from = location.state?.from?.pathname || ROUTES.HOME;
+    navigate(from, { replace: true });
+    
+  } catch (error) {
+    console.error('Google login error:', error);
+  }
 };
 
 const handleGoogleLoginError = () => {

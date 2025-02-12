@@ -1,9 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { isLogoutRoute, getLogoutRoute } from '../lib/routes';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+
+import { useAuth } from '../context/AuthContext';
+import { getLogoutRoute, isLogoutRoute } from '../lib/routes';
+import ROUTES from '../lib/routes';
 
 const Logout = () => {
-  const location = useLocation(); 
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation(); // Отримуємо інформацію про поточний URL
   const [isConfirming, setIsConfirming] = useState(false);
 
   useEffect(() => {
@@ -11,6 +16,8 @@ const Logout = () => {
       console.log('This is the logout route');
       console.log('Logout route:', getLogoutRoute());
     }
+    logout();
+    navigate(ROUTES.HOME);
   }, [location]);
 
   const handleLogout = () => {
