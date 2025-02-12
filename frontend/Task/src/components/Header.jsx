@@ -16,7 +16,7 @@ function Header() {
       borderBottom: '1px solid rgba(0, 255, 255, 0.2)',
     },
     customLogo: {
-      height: '50px',
+      height: '150px',
       filter: 'drop-shadow(0 0 10px rgba(0, 255, 255, 0.7))', // Neon glow effect for logo
     },
     userPhoto: {
