@@ -65,7 +65,11 @@ namespace Infrastructure.Services
                         IsCorrect = o.IsCorrect
                     });
 
-                    await taskOptionRepository.InsertRangeAsync(options);
+                    foreach(var taskOption in options)
+                    {
+                        await taskOptionRepository.InsertAsync(taskOption);
+                        await _unitOfWork.SaveAsync();
+                    }
                 }
                 else if (taskDto.TaskWrite != null)
                 {
@@ -112,6 +116,7 @@ namespace Infrastructure.Services
 
                 await _unitOfWork.SaveAsync();
             }
+
 
             return quest.Id;
         }
