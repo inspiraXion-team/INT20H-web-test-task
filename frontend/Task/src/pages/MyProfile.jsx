@@ -8,15 +8,18 @@ const Profile = () => {
   const [profile, setProfile] = useState({
     username: "",
     email: "",
-    avatar: "https://via.placeholder.com/150",
+    avatar: 'src/assets/avatar-placeholder.png',
   });
   const [isEditing, setIsEditing] = useState(false);
   const [newName, setNewName] = useState("");
   const [avatarFile, setAvatarFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   // Отримання даних профілю при завантаженні компонента
   useEffect(() => {
     const fetchProfile = async () => {
+      setLoading(true);
       try {
         const data = await ProfileService.getProfile();
         setProfile({
@@ -26,7 +29,10 @@ const Profile = () => {
         });
         setNewName(data.username);
       } catch (error) {
+        setError("Failed to fetch profile");
         console.error("Failed to fetch profile:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -51,6 +57,7 @@ const Profile = () => {
 
   // Оновлення профілю
   const handleSave = async () => {
+    setLoading(true);
     try {
       const updatedProfile = await ProfileService.updateProfile(newName, avatarFile);
       setProfile({
@@ -60,7 +67,10 @@ const Profile = () => {
       });
       setIsEditing(false);
     } catch (error) {
+      setError("Failed to update profile");
       console.error("Failed to update profile:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,6 +82,9 @@ const Profile = () => {
     { icon: "🌍", title: "Explorer" },
     { icon: "🎥", title: "Media Wizard" },
   ];
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div style={styles.profilePage}>
