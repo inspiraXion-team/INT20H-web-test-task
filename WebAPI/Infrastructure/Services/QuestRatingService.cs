@@ -16,7 +16,7 @@ namespace Infrastructure.Services
         public async Task AddQuestRatingAsync(QuestRatingCreateDTO ratingDto, int userId)
         {
             var quest = await _unitOfWork.Repository<Quest>()
-                .GetAsync(q => q.Id == ratingDto.QuestId);
+                .GetFirstOrDefaultAsync(q => q.Id == ratingDto.QuestId);
 
             if (quest == null)
             {
@@ -33,6 +33,36 @@ namespace Infrastructure.Services
             };
 
             await _unitOfWork.Repository<QuestRating>().InsertAsync(newRating);
+            await _unitOfWork.SaveAsync();
+
+            await UpdateAuthorRating(quest.AuthorId);
+        }
+
+        public async Task UpdateAuthorRating(int authorId)
+        {
+            var authorRatings = await _unitOfWork.Repository<QuestRating>()
+                .GetAsync(r => r.UserId == authorId);
+
+            var averageRating = authorRatings.Any() ? authorRatings.Average(r => r.Rating) : 0;
+
+            var authorRating = await _unitOfWork.Repository<AuthorRating>()
+                .GetFirstOrDefaultAsync(ar => ar.AuthorId == authorId);
+
+            if (authorRating != null)
+            {
+                authorRating.Rating = averageRating;
+                await _unitOfWork.Repository<AuthorRating>().UpdateAsync(authorRating);
+            }
+            else
+            {
+                authorRating = new AuthorRating
+                {
+                    AuthorId = authorId,
+                    Rating = averageRating
+                };
+                await _unitOfWork.Repository<AuthorRating>().InsertAsync(authorRating);
+            }
+
             await _unitOfWork.SaveAsync();
         }
     }

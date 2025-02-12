@@ -9,6 +9,6 @@ namespace Domain.Entities
         public int AuthorId { get; set; }
         public User Author { get; set; }
         [Required]
-        public decimal Rating { get; set; }
+        public double Rating { get; set; }
     }
 }
