@@ -16,11 +16,11 @@ namespace Domain.Entities
         public string AvatarURL { get; set; } = string.Empty;
         public UserStatus Status { get; set; } = UserStatus.User;
         public RefreshToken RefreshToken { get; set; }
-        public IEnumerable<QuestRating> QuestRatings { get; set; }
-        public IEnumerable<QuestProgress> QuestProgresses { get; set; }
-        public IEnumerable<Reward> Rewards { get; set; }
+        public ICollection<QuestRating> QuestRatings { get; set; }
+        public ICollection<QuestProgress> QuestProgresses { get; set; }
+        public ICollection<Reward> Rewards { get; set; }
         public AuthorRating Rating { get; set; }
-        public IEnumerable<Quest> Quests { get; set; }
-        public IEnumerable<TaskProgress> TaskProgresses { get; set; }
+        public ICollection<Quest> Quests { get; set; }
+        public ICollection<TaskProgress> TaskProgresses { get; set; }
     }
 }

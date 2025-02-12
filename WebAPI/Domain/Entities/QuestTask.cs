@@ -12,10 +12,10 @@ namespace Domain.Entities
         public int Order { get; set; }
         public int QuestId { get; set; }
         public Quest Quest { get; set; }
-        public IEnumerable<TaskOption> TaskOptions { get; set; } = Enumerable.Empty<TaskOption>();
+        public ICollection<TaskOption> TaskOptions { get; set; } = new List<TaskOption>();
         public TaskWrite? TaskWrite { get; set; } = null!;
         public TaskImage? TaskImage { get; set; } = null!;
-        public IEnumerable<MediaContent> MediaContents { get; set; } = Enumerable.Empty<MediaContent>();
-        public IEnumerable<TaskProgress> TaskProgresses { get; set; }
+        public ICollection<MediaContent> MediaContents { get; set; } = new List<MediaContent>();
+        public ICollection<TaskProgress> TaskProgresses { get; set; }
     }
 }

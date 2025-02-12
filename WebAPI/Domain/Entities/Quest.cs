@@ -16,8 +16,8 @@ namespace Domain.Entities
         [Required]
         public bool IsPublished { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.Now;
-        public IEnumerable<QuestRating> Rating { get; set; }
-        public IEnumerable<QuestProgress> QuestProgresses {  get; set; }
-        public IEnumerable<QuestTask> QuestTasks { get; set; }
+        public ICollection<QuestRating> Rating { get; set; }
+        public ICollection<QuestProgress> QuestProgresses {  get; set; }
+        public ICollection<QuestTask> QuestTasks { get; set; }
     }
 }
